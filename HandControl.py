@@ -120,7 +120,7 @@ class DXL_Coms(object):
 
 
 class DXL_Motor(object):
-    def __init___(self, port_h, package_h, Motor_num =1):
+    def __init___(self, port_h, package_h, Motor_number =1):
         #Control Table Default Values (set for XL330)
         self.name = None
         self.indirect_mode = False
