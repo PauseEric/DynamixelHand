@@ -528,7 +528,7 @@ def MotorPosControl(motorName, movement):
     dynamixel.updateMotorData()
 
 def checkAllPos():
-    for motor in motor_list
+    for motor in motor_list:
         print(motor.DXL_ID)
         print(motor.infoParam('position'))
         
