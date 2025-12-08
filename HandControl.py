@@ -483,11 +483,11 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
 
 #Hand Motor Initialisation
 dynamixel = DXL_Coms(deviceSerial,B_Rate)
-ring = dynamixel.createMotor(motor_number = 1)
-thumb = dynamixel.createMotor(motor_number = 2)
-middle = dynamixel.createMotor(motor_number = 3)
-pinky = dynamixel.createMotor(motor_number = 4)
-pointer= dynamixel.createMotor(motor_number = 5)
+ring = dynamixel.createMotor("ring", motor_number = 1)
+thumb = dynamixel.createMotor("thumb", motor_number = 2)
+middle = dynamixel.createMotor("middle", motor_number = 3)
+pinky = dynamixel.createMotor("pinky", motor_number = 4)
+pointer= dynamixel.createMotor("pointer", motor_number = 5)
 
 motor_list = [ring, thumb, middle, pinky, pointer]
 for motor in motor_list:
