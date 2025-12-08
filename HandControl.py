@@ -9,7 +9,7 @@ B_Rate = 57600
 class DXL_Coms(object):
     def __init__ (self, device_name = deviceSerial, b_rate = B_Rate):
         BAUDRATE = b_rate
-        DEVICENAME = devive_name
+        DEVICENAME = device_name
         PROTOCOL_VERSION = 2.0
         #Opening Ports
         try:
