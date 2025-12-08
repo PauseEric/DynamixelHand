@@ -473,7 +473,7 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
 # Hand-Related Controls
 
 #Hand Motor Initialisation
-dynamixel = DXL_Coms(DEVICE_NAME,B_RATE)
+dynamixel = DXL_Coms(deviceSerial,B_Rate)
 ring = dynamixel.createMotor("ring",motor_number = 1)
 thumb = dynamixel.createMotor("thumb",motor_number = 2)
 middle = dynamixel.createMotor("middle",motor_number = 3)
