@@ -4,25 +4,6 @@ import sys, math, time
 global deviceSerial = '/dev/ttyUSB0'
 global B_Rate = 57600
 
-"""
-    Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
-    This function opens the hand by moving the motors to their maximum position values.
-    
-    Values for Maximum Pos of Each Finger (Open Hand)
-    Thumb: 0
-    Pointer: 2074
-    Middle:1972
-    Ring: 1974
-    Pinky: 2475
-    
-    Values for Minimum Pos of Each Finger (Closed Fist)
-    Thumb: 410
-    Pointer: 2590
-    Middle: 1537
-    Ring: 2551
-    Pinky: 1920
-    
-"""    
 #Communication for sending commands through Dynamixel motor controllers
 class DXL_Coms(object):
     def __init__ (self, device_name = deviceSerial, b_rate = B_Rate):
@@ -487,4 +468,84 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
                 )
         else:
             return self.data_dict[dxl_id][PARAM_NUM_DATA]
+            
+# Hand-Related Controls
 
+#Hand Motor Initialisation
+dynamixel = DXL_Conmunication(DEVICE_NAME,B_RATE)
+ring = dynamixel.createMotor("ring",motor_number = 1)
+thumb = dynamixel.createMotor("thumb",motor_number = 2)
+middle = dynamixel.createMotor("middle",motor_number = 3)
+pinky = dynamixel.createMotor("pinky",motor_number = 4)
+pointer= dynamixel.createMotor("pointer",motor_number = 5)
+
+motor_list = [ring, thumb, middle, pinky, pointer]
+for motor in motor_list:
+    motor.switchMode('position') #default control mode set to position
+    motor.enableMotor()
+    
+"""
+    Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
+    This function opens the hand by moving the motors to their maximum position values.
+    
+    Values for Maximum Pos of Each Finger (Open Hand)
+    Thumb: 0
+    Pointer: 2074
+    Middle:1972
+    Ring: 1974
+    Pinky: 2475
+    
+    Values for Minimum Pos of Each Finger (Closed Fist)
+    Thumb: 410
+    Pointer: 2590
+    Middle: 1537
+    Ring: 2551
+    Pinky: 1920
+"""    
+def handOpen():    
+    ring.writePosition(1974)
+    thumb.writePosition(0)
+    middle.writePosition(1972)
+    pinky.writePosition(2475)
+    pointer.writePosition(2074)
+    dynamixel.sendAllCmd()
+    dynamixel.updateMotorData()
+    
+def handClose():
+    ring.writePosition(2550)
+    thumb.writePosition(360)
+    middle.writePosition(1600)
+    pinky.writePosition(2400)
+    pointer.writePosition(2500)
+    dynamixel.sendAllCmd()
+    dynamixel.updateMotorData()
+    
+def MotorPosControl(motorName, movement)
+    motorName.switchMode('position')
+    motorName.writePosition(movement)
+    dynamixel.sendAllCmd()
+    dynamixel.updateMotorData()
+
+def checkAllPos():
+    for motor in motor_list
+        print(motor.DXL_ID)
+        print(motor.infoParam('position'))
+        
+        
+
+def main(): 
+    print("This is DXL_Communicaion module test file.")
+    print("Welcome, Main Start")
+    handOpen()
+    checkAllPos()
+    input("Hand set to Open by Default, Please Press Enter to Close Hand")
+    handClose()
+    checkAllPos()
+    for motor in motor_list:
+        motor.disableMotor()
+    print("Program Exit")
+
+
+
+if __name__ == "__main__":
+    main()
