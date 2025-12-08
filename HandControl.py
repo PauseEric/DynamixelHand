@@ -173,7 +173,7 @@ class DXL_Motor(object):
                 mode = POSITION_MODE
             elif mode == 'velocity':
                 mode = VELOCITY_MODE
-            elif mode == 'pwm":
+            elif mode == 'pwm':
                 mode = PWM_MODE
             switch_success = self.directWriteData(mode, *OPERATE_MODE_ADD_LEN)
             if switch_success:
