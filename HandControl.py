@@ -53,7 +53,7 @@ class DXL_Coms(object):
                 print("motor {0} connect error". format (motor_number))
                 return None
         else:
-            print ("Motor {0} already exist" .format(motor_number)\
+            print ("Motor {0} already exist" .format(motor_number))
             for motor in self.motors: 
                 if motor.DXL_ID == motor_number:
                     return motor
