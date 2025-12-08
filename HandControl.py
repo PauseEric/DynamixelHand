@@ -521,7 +521,7 @@ def handClose():
     dynamixel.sendAllCmd()
     dynamixel.updateMotorData()
     
-def MotorPosControl(motorName, movement)
+def MotorPosControl(motorName, movement):
     motorName.switchMode('position')
     motorName.writePosition(movement)
     dynamixel.sendAllCmd()
