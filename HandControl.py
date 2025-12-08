@@ -455,7 +455,7 @@ class DXL_Motor(object):
 
         print("[ID:{0}] reboot Succeeded".format(self.DXL_ID))
 
-def writePosition(self, value):
+    def writePosition(self, value):
         if self.OPERATING_MODE == POSITION_MODE:
             ADDR = 116
             LEN = 4
