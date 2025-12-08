@@ -2,7 +2,7 @@ import dynamixel_sdk as dxlSDK
 import sys, math, time
 
 global deviceSerial, B_Rate
-deviceSerial = '/dev/ttyUSB0'
+deviceSerial = "/dev/ttyUSB0"
 B_Rate = 57600
 
 #Communication for sending commands through Dynamixel motor controllers
