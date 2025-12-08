@@ -58,6 +58,75 @@ class DXL_Coms(object):
         self.motors = []
         self.parm = []
 
+    def createMotor(self, name, motor_number = 1):
+        if motor_number not in [motor.DXL_ID for motor in self.motors]:
+            motor = DXL_Motor(self.port_handler, self.packet_handler, motor_number)
+            motor.pingMotor()
+            if motor.connected: 
+                motor.name= name
+                self.motors.append(motor)
+                self.addAllBuckParameter()
+                return motor
+            else: 
+                print("motor {0} connect error". format (motor_number))
+                return None
+        else:
+            print ("Motor {0} already exist" .format(motor_number)\
+            for motor in self.motors: 
+                if motor.DXL_ID == motor_number:
+                    return motor
+            
+    def activateIndirectMode(self):
+        for motors in self.motors:
+            motor.activateIndirectMode()
+        self.addAllBukK
+        
+    def sentAllCmd(self):
+        for motor in self.motors:
+            for msg in motor.msg_sent:
+                _ = self.groupBulkWrite.addParam(*msg)
+            motor.msg_sent = list()
+        dxl_comm_result = self.groupBulkWrite.txPacket()
+        if dxl_comm_result != dxlSDK.COMM_SUCCESS:
+            print("DXL: sentAllCmd Error: {0}".format(self.packet_handler.getTxRxResult(dxl_comm_result)))
+        # while result != dxlSDK.COMM_SUCCESS:
+        #     result = self.groupBulkWrite.txPacket()
+        #     print(self.packet_handler.getTxRxResult(result))
+        self.groupBulkWrite.clearParam()
+
+    def disableAllMotor(self):
+        self.groupBulkWrite.clearParam()
+        for motor in self.motors:
+            self.groupBulkWrite.addParam(motor.DXL_ID, 64, 1, [0])
+        result = self.groupBulkWrite.txPacket()
+        if result == dxlSDK.COMM_SUCCESS:
+            self.groupBulkWrite.clearParam()
+        else:
+            print(self.packet_handler.getTxRxResult(result))
+            self.sentAllCmd()
+    def closeHandler(self):
+        self.port_handler.closePort()
+
+    def sentCommand(self):
+        self.groupBulkWrite.txPacket()
+        self.groupBulkWrite.clearParam()
+
+    def readHardwareError(self):
+        for motor in self.motors:
+            motor.readHardwareError()
+
+    def rebootAllMotor(self):
+        for motor in self.motors:
+            motor.rebootMotor()
+        time.sleep(3)
+        self.__communicate_error_count = 0
+
+    def checkErrorCount(self):
+        return self.__communicate_error_count
+
+
+
+
 
 class DXL_Motor(object):
     def __init___(self, port_h, package_h, Motor_num =1):
@@ -385,7 +454,200 @@ class DXL_Motor(object):
             print("ID:{0} reboot Error: {1}".format(self.DXL_ID,self.packet_h.getRxPacketError(dxl_error)))
 
         print("[ID:{0}] reboot Succeeded".format(self.DXL_ID))
+
+def writePosition(self, value):
+        if self.OPERATING_MODE == POSITION_MODE:
+            ADDR = 116
+            LEN = 4
+            data = [
+                dxlSDK.DXL_LOBYTE(dxlSDK.DXL_LOWORD(value)),
+                dxlSDK.DXL_HIBYTE(dxlSDK.DXL_LOWORD(value)),
+                dxlSDK.DXL_LOBYTE(dxlSDK.DXL_HIWORD(value)),
+                dxlSDK.DXL_HIBYTE(dxlSDK.DXL_HIWORD(value))
+            ]
+            # self.msg_sent.append((self.DXL_ID, ADDR, LEN, data))
+            if value >= self.DXL_MINIMUM_POSITION_VALUE and value <= self.DXL_MAXIMUM_POSITION_VALUE:
+                self.msg_sent.append((self.DXL_ID, ADDR, LEN, data))
+                # _ = DXL_Conmunication.groupBulkWrite.addParam(self.DXL_ID, ADDR, LEN, data)
+            else:
+                print("Commond exceed maximum range")
+        else:
+            print("Operating Mode Error while setting position")
+
+    def writePWM(self, value):
+        if self.OPERATING_MODE == PWM_MODE:
+            ADDR = 100
+            LEN = 2
+            data = [
+                dxlSDK.DXL_LOBYTE(dxlSDK.DXL_LOWORD(value)),
+                dxlSDK.DXL_HIBYTE(dxlSDK.DXL_LOWORD(value)),
+                # dxlSDK.DXL_LOBYTE(dxlSDK.DXL_HIWORD(value)),
+                # dxlSDK.DXL_HIBYTE(dxlSDK.DXL_HIWORD(value))
+            ]
+            # self.msg_sent.append((self.DXL_ID, ADDR, LEN, data))
+            if value >= self.DXL_MINIMUM_PWM_VALUE and value <= self.DXL_MAXIMUM_PWM_VALUE:
+                self.msg_sent.append((self.DXL_ID, ADDR, LEN, data))
+                # _ = DXL_Conmunication.groupBulkWrite.addParam(self.DXL_ID, ADDR, LEN, data)
+            else:
+                print("Commond exceed maximum range")
+        else:
+            print("Operating Mode Error while setting position")
+
+
+    def MotorCorrection(self):
+        pass
+
+    def infoParam(self,name):
+        ADDR, LEN = None, None
+        if name == 'torque':
+            ADDR, LEN = self.read_addr_info['TORQUE_ENABLE']['ADDR'], self.read_addr_info['TORQUE_ENABLE']['LEN']
+        if name == 'current':
+            ADDR, LEN = self.read_addr_info['PRESENT_CURRENT']['ADDR'], self.read_addr_info['PRESENT_CURRENT']['LEN']
+        if name == 'velocity':
+            ADDR, LEN = self.read_addr_info['PRESENT_VELOCITY']['ADDR'], self.read_addr_info['PRESENT_VELOCITY']['LEN']
+        if name == 'position':
+            ADDR, LEN = self.read_addr_info['PRESENT_POSITION']['ADDR'], self.read_addr_info['PRESENT_POSITION']['LEN']
+        if name == 'temperture':
+            ADDR, LEN = self.read_addr_info['PRESENT_TEMPERTURE']['ADDR'], self.read_addr_info['PRESENT_TEMPERTURE']['LEN']
+        return self.DXL_ID, ADDR, LEN
+
+    def addRequestValue(self, name, addr, dlen):
+        self.read_addr_info[name] = {'ADDR': addr, 'LEN': dlen}
+        setattr(self, name + "_value", 0)
+
+    def updateValue(self):
+        for name, info in self.indirect_read_addr_info.items() if self.indirect_mode else self.read_addr_info.items():
+            shifted_address = info['ADDR'] - self.start_addr
+            byte_data = self.data[shifted_address:shifted_address+info['LEN']]
+            if info['LEN'] == 1:
+                value = byte_data[0]
+            elif info['LEN'] == 2:
+                value = dxlSDK.DXL_MAKEWORD(byte_data[0],byte_data[1])
+            elif info['LEN'] == 4:
+                value = dxlSDK.DXL_MAKEDWORD(
+                    dxlSDK.DXL_MAKEWORD(byte_data[0],byte_data[1]),
+                    dxlSDK.DXL_MAKEWORD(byte_data[2],byte_data[3])
+                )
+            else:
+                value = byte_data
+            setattr(self, name + "_value", value)
+            if self.PRESENT_CURRENT_value >= 32768:
+                self.PRESENT_CURRENT_value = self.PRESENT_CURRENT_value-65535
+            if self.PRESENT_VELOCITY_value >= (2**32)/2:
+                self.PRESENT_VELOCITY_value = self.PRESENT_VELOCITY_value - (2**32-1)
+            if self.PRESENT_POSITION_value >= (2**32)/2:
+                self.PRESENT_POSITION_value = self.PRESENT_POSITION_value - (2**32-1)
+        if self.HARDWARE_ERR_value == 8:
+            self.PRESENT_CURRENT_value = None
+            self.PRESENT_POSITION_value = None
+            self.PRESENT_VELOCITY_value = None
+
+    def directReadData(self, add, len, print_msg=True) -> tuple[int, bool]:
+        value, com_err_msg, dxl_err_msg = None, None, None
+        func_name = "read{0}ByteTxRx".format(len)
+        func_ = getattr(self.packet_h,func_name)
+        value, dxl_comm_result, dxl_error = func_(self.port_h, self.DXL_ID, add)
+        if dxl_comm_result != dxlSDK.COMM_SUCCESS:
+            com_err_msg = self.packet_h.getTxRxResult(dxl_comm_result)
+        elif dxl_error != 0:
+            dxl_err_msg = self.packet_h.getRxPacketError(dxl_error)
+        else:
+            return value, True
+        if com_err_msg is not None or dxl_err_msg is not None:
+            if com_err_msg and print_msg: print("DXL: directReadData Error: {0} at ID: {1}".format(com_err_msg, self.DXL_ID))
+            if dxl_err_msg and print_msg: print("DXL: directReadData Error: {0} at ID: {1}".format(dxl_err_msg, self.DXL_ID))
+            return value, False
+
+    def directWriteData(self, data, add, len, print_msg=True):
+        com_err_msg, dxl_err_msg = None, None
+        func_name = "write{0}ByteTxRx".format(len)
+        func_ = getattr(self.packet_h, func_name)
+        dxl_comm_result, dxl_error = func_(self.port_h, self.DXL_ID, add, data)
+        if dxl_comm_result != dxlSDK.COMM_SUCCESS:
+            com_err_msg = self.packet_h.getTxRxResult(dxl_comm_result)
+        elif dxl_error != 0:
+            dxl_err_msg = self.packet_h.getRxPacketError(dxl_error)
+        else:
+            return True
+        if com_err_msg is not None or dxl_err_msg is not None:
+            if com_err_msg and print_msg: print("DXL: directWriteData Error: {0} at ID: {1}".format(com_err_msg, self.DXL_ID))
+            if dxl_err_msg and print_msg: print("DXL: directWriteData Error: {0} at ID: {1}".format(dxl_err_msg, self.DXL_ID))
+            return False
+            
+    def setVelocity(self, v_cmd):
+        if self.OPERATING_MODE == VELOCITY_MODE:
+            addr_len = self.write_addr_info['GOAL_VELOCITY']
+            if v_cmd <= self.DXL_MAXIMUM_VELOCITY_VALUE and v_cmd >= self.DXL_MINIMUM_VELOCITY_VALUE:
+                self.directWriteData(v_cmd, addr_len['ADDR'], addr_len['LEN'],True)
+            else:
+                print("Command out off range")
+        else:
+            print("Mode Error while write velocity in {0} mode".format(self.OPERATING_MODE))
     
+    def setPosition(self, p_cmd):
+        if self.OPERATING_MODE == POSITION_MODE:
+            addr_len = self.write_addr_info['GOAL_POSITION']
+            if p_cmd <= self.DXL_MAXIMUM_POSITION_VALUE and p_cmd >= self.DXL_MINIMUM_POSITION_VALUE:
+                self.directWriteData(p_cmd, addr_len['ADDR'], addr_len['LEN'], True)
+            else:
+                print("Command out off range")
+        else:
+            print("Mode Error while write position in {0} mode".format(self.OPERATING_MODE))
 
+    def setAccelerationProfile(self, profile: int)->None:
+        self.acc_profile = profile
+        ADDR = 108
+        LEN  = 4
+        self.directWriteData(profile, add=ADDR, len=LEN)
 
+    def pingMotor(self):
+        dxl_model_number, dxl_comm_result, dxl_error = self.packet_h.ping(self.port_h, self.DXL_ID)
+        if dxl_comm_result != dxlSDK.COMM_SUCCESS:
+            print("DXL: Ping Error: {0} at ID:{1}".format(self.packet_h.getTxRxResult(dxl_comm_result), self.DXL_ID))
+        elif dxl_error != 0:
+            print("DXL: Ping Error: {0} at ID:{1}".format(self.packet_h.getRxPacketError(dxl_error), self.DXL_ID))
+        else:
+            print("[ID:%03d] ping Succeeded. Dynamixel model number : %d" % (self.DXL_ID, dxl_model_number))
+            self.connected = True
+
+    def rebootMotor(self):
+        dxl_comm_result, dxl_error = self.packet_h.reboot(self.port_h, self.DXL_ID)
+        if dxl_comm_result != dxlSDK.COMM_SUCCESS:
+            print("ID:{0} reboot Error: {1}".format(self.DXL_ID,self.packet_h.getTxRxResult(dxl_comm_result)))
+        elif dxl_error != 0:
+            print("ID:{0} reboot Error: {1}".format(self.DXL_ID,self.packet_h.getRxPacketError(dxl_error)))
+
+        print("[ID:{0}] reboot Succeeded".format(self.DXL_ID))
+
+class MyGroupBucketRead(dxlSDK.GroupBulkRead):
+
+    def __init__(self,port_handler, packet_handler):
+        super(MyGroupBucketRead, self).__init__(port_handler,packet_handler)
+
+    def getData(self, dxl_id, address, data_length):
+        PARAM_NUM_DATA = 0
+        PARAM_NUM_ADDRESS = 1
+        if not self.isAvailable(dxl_id, address, data_length):
+            return 0
+
+        start_addr = self.data_dict[dxl_id][PARAM_NUM_ADDRESS]
+
+        if data_length == 1:
+            return self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr]
+        elif data_length == 2:
+            return dxlSDK.DXL_MAKEWORD(
+                self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr],
+                self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr + 1]
+            )
+        elif data_length == 4:
+            return dxlSDK.DXL_MAKEDWORD(
+                dxlSDK.DXL_MAKEWORD(
+                    self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr + 0],
+                    self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr + 1]),
+                dxlSDK.DXL_MAKEWORD(
+                    self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr + 2],
+                    self.data_dict[dxl_id][PARAM_NUM_DATA][address - start_addr + 3])
+                )
+        else:
+            return self.data_dict[dxl_id][PARAM_NUM_DATA]
 
