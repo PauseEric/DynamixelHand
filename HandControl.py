@@ -473,7 +473,7 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
 # Hand-Related Controls
 
 #Hand Motor Initialisation
-dynamixel = DXL_Conmunication(DEVICE_NAME,B_RATE)
+dynamixel = DXL_Coms(DEVICE_NAME,B_RATE)
 ring = dynamixel.createMotor("ring",motor_number = 1)
 thumb = dynamixel.createMotor("thumb",motor_number = 2)
 middle = dynamixel.createMotor("middle",motor_number = 3)
@@ -535,7 +535,7 @@ def checkAllPos():
         
 
 def main(): 
-    print("This is DXL_Communicaion module test file.")
+    print("This is DXL_Coms module test file.")
     print("Welcome, Main Start")
     handOpen()
     checkAllPos()
