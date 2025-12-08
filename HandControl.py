@@ -11,6 +11,15 @@ class DXL_Coms(object):
         BAUDRATE = b_rate
         DEVICENAME = device_name
         PROTOCOL_VERSION = 2.0
+
+        self.port_handler = dxlSDK.PortHandler(DEVICENAME)
+        self.packet_handler = dxlSDK.PacketHandler(PROTOCOL_VERSION)
+        self.groupBulkWrite = dxlSDK.GroupBulkWrite(self.port_handler, self.packet_handler)
+        self.groupBulkRead = MyGroupBucketRead(self.port_handler, self.packet_handler)
+
+        self.__communicate_error_count = 0
+
+        self.portHandler_Check_Pass = False
         #Opening Ports
         try:
             if self.port_handler.openPort():
