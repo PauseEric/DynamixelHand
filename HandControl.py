@@ -565,7 +565,16 @@ for motor in motor_list:
     Ring: 2551
     Pinky: 1920
 """    
+def enableHandMotors():
+    for motor in motor_list:
+        motor.enableMotor()
+
+def disableHandMotors():
+    for motor in motor_list:
+        motor.disableMotor()
+
 def handOpen():    
+    enableHandMotors()
     ring.writePosition(1974)
     thumb.writePosition(0)
     middle.writePosition(1972)
@@ -575,6 +584,7 @@ def handOpen():
     dynamixel.updateMotorData()
     
 def handClose():
+    enableHandMotors()
     ring.writePosition(2550)
     thumb.writePosition(360)
     middle.writePosition(1600)
@@ -584,6 +594,7 @@ def handClose():
     dynamixel.updateMotorData()
     
 def MotorPosControl(motorName, movement):
+    motorName.enableMotor()
     motorName.switchMode('position')
     motorName.writePosition(movement)
     dynamixel.sentAllCmd()
@@ -601,7 +612,7 @@ def main():
     print("Welcome, Main Start")
     x = 1
     while(x==1):
-        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 'p' to Check Position, 'q' to Quit: ")
+        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
         if cmd == 'o':
             handOpen()
             checkAllPos()
@@ -612,6 +623,8 @@ def main():
             checkAllPos()
         elif cmd == 'q':
             x = 0
+        elif cmd == 'd':
+            disableHandMotors()
         else:
             print("Invalid Command, Please Enter Again")
     
