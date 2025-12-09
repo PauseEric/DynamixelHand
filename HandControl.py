@@ -1,6 +1,23 @@
 import dynamixel_sdk as dxlSDK
 import sys, math, time
 
+POSITION_RATIO = 2*math.pi/4096
+VELOCITY_RATIO = 0.229*2*math.pi/60
+CURRENT_RATIO  = 3.6                    #mA
+VELOCITY_MODE  = 1
+POSITION_MODE  = 3
+PWM_MODE       = 16
+
+TORQUE_ADDR_LEN = (64,1)
+TORQUE_ENABLE = 1
+TORQUE_DISABLE = 0
+
+LED_ADDR_LEN = (65,1)
+LED_ON = 1
+LED_OFF = 0
+
+OPERATE_MODE_ADD_LEN = (11, 1)
+
 global deviceSerial, B_Rate
 deviceSerial = "/dev/ttyUSB0"
 B_Rate = 57600
