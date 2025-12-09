@@ -541,8 +541,19 @@ thumb = dynamixel.createMotor("thumb", motor_number = 2)
 middle = dynamixel.createMotor("middle", motor_number = 3)
 pinky = dynamixel.createMotor("pinky", motor_number = 4)
 pointer= dynamixel.createMotor("pointer", motor_number = 5)
+joint= dynamixel.createMotor("joint", motor_number = 6)
 
-motor_list = [ring, thumb, middle, pinky, pointer]
+#Mapping Motors to Names for using String to reference Motors
+motor_name= {
+    'ring': ring,
+    'thumb': thumb, 
+    'middle': middle,
+    'pinky': pinky,
+    'pointer': pointer,
+    'joint': joint
+}
+
+motor_list = [ring, thumb, middle, pinky, pointer, joint]
 for motor in motor_list:
     motor.switchMode('position') #default control mode set to position
     motor.enableMotor()
@@ -564,6 +575,10 @@ for motor in motor_list:
     Middle: 1952
     Ring: 2515
     Pinky: 1550
+    
+    thumb joint limits:
+    open: 
+    close: 
 """    
 def enableHandMotors():
     for motor in motor_list:
@@ -613,7 +628,7 @@ def main():
     print("Welcome, Main Start")
     x = 1
     while(x==1):
-        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
+        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 's' for Finger Test, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
         if cmd == 'o':
             handOpen()
             checkAllPos()
@@ -622,6 +637,37 @@ def main():
             checkAllPos()
         elif cmd == 'p':
             checkAllPos()
+        elif cmd == 's':
+            while True:
+                finger_cmd = input("Enter finger name (ring, thumb, middle, pinky, pointer, joint) or 'b' to go back: ")
+                if finger_cmd in motor_name.keys():
+                    pos_cmd = int(input(""" 
+                    Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
+                    This function opens the hand by moving the motors to their maximum position values.
+    
+                    Values for Maximum Pos of Each Finger (Open Hand)
+                    Thumb: 45
+                    Pointer: 2013
+                    Middle:2452
+                    Ring: 2006
+                    Pinky: 2058
+                    
+                    Values for Minimum Pos of Each Finger (Closed Fist)
+                    Thumb: 256
+                    Pointer: 2536
+                    Middle: 1952
+                    Ring: 2515
+                    Pinky: 1550 
+                    
+                    
+                    Please Input a Position for the corresponding finger motor:
+                    """))
+                    MotorPosControl(finger_cmd, pos_cmd)
+                    checkAllPos()
+                elif finger_cmd == 'b':
+                    break
+                else:
+                    print("Invalid Finger Name, Please Enter Again")
         elif cmd == 'q':
             x = 0
         elif cmd == 'd':
@@ -629,19 +675,7 @@ def main():
         else:
             print("Invalid Command, Please Enter Again")
     
-    '''
-    handOpen()
-    checkAllPos()
-    input("Hand set to Open by Default, Please Press Enter to Close Hand")
-    handClose()
-    checkAllPos()
-    for motor in motor_list:
-        motor.disableMotor()
-        
-    input("Single actuator test, Please Press Enter to Move Middle to Position 1600")
-    MotorPosControl(middle,1600)
-    checkAllPos()
-    '''
+    
     print("Program Exit")
 
 
