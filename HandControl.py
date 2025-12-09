@@ -595,6 +595,7 @@ def handOpen():
     middle.writePosition(2452)
     pinky.writePosition(2058)
     pointer.writePosition(2013)
+    joint.writePosition(1040)
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
@@ -605,6 +606,7 @@ def handClose():
     middle.writePosition(1952)
     pinky.writePosition(1550)
     pointer.writePosition(2536)
+    joint.writePosition(1916)   
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
