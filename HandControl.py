@@ -599,6 +599,23 @@ def checkAllPos():
 def main(): 
     print("This is DXL_Coms module test file.")
     print("Welcome, Main Start")
+    x = 1
+    while(x==1):
+        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 'p' to Check Position, 'q' to Quit: ")
+        if cmd == 'o':
+            handOpen()
+            checkAllPos()
+        elif cmd == 'c':
+            handClose()
+            checkAllPos()
+        elif cmd == 'p':
+            checkAllPos()
+        elif cmd == 'q':
+            x = 0
+        else:
+            print("Invalid Command, Please Enter Again")
+    
+    '''
     handOpen()
     checkAllPos()
     input("Hand set to Open by Default, Please Press Enter to Close Hand")
@@ -607,10 +624,10 @@ def main():
     for motor in motor_list:
         motor.disableMotor()
         
-    input("Single actuator test, Please Press Enter to Move Thumb to Position 200")
+    input("Single actuator test, Please Press Enter to Move Middle to Position 1600")
     MotorPosControl(middle,1600)
     checkAllPos()
-    
+    '''
     print("Program Exit")
 
 
