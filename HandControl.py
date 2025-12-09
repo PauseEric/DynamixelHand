@@ -558,28 +558,20 @@ for motor in motor_list:
     motor.switchMode('position') #default control mode set to position
     motor.enableMotor()
     
-"""
-    Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
-    This function opens the hand by moving the motors to their maximum position values.
-    
-    Values for Maximum Pos of Each Finger (Open Hand)
-    Thumb: 45
-    Pointer: 2013
-    Middle:2058 
-    Ring: 2006
-    Pinky: 2452
-    
-    Values for Minimum Pos of Each Finger (Closed Fist)
-    Thumb: 256
-    Pointer: 2536
-    Middle: 1550
-    Ring: 2515
-    Pinky: 1952
-    
-    thumb joint limits:
-    open: 1040
-    close: 1916
-"""    
+# Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
+thumbOpenPos = 45
+thumbClosePos = 283
+pointerOpenPos = 2013
+pointerClosePos = 2593
+middleOpenPos = 2058
+middleClosePos = 1472
+ringOpenPos = 2006
+ringClosePos = 2590
+pinkyOpenPos = 2452
+pinkyClosePos = 1875
+jointOpenPos = 1040
+jointClosePos = 1916
+
 def enableHandMotors():
     for motor in motor_list:
         motor.enableMotor()
@@ -590,23 +582,23 @@ def disableHandMotors():
 
 def handOpen():    
     enableHandMotors()
-    ring.writePosition(2006)
-    thumb.writePosition(45)
-    middle.writePosition(2058)
-    pinky.writePosition(2452)
-    pointer.writePosition(2013)
-    joint.writePosition(1040)
+    ring.writePosition(ringOpenPos)
+    thumb.writePosition(thumbOpenPos)
+    middle.writePosition(middleOpenPos)
+    pinky.writePosition(pinkyOpenPos)
+    pointer.writePosition(pointerOpenPos)
+    joint.writePosition(jointOpenPos)
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
 def handClose():
     enableHandMotors()
-    ring.writePosition(2515)
-    thumb.writePosition(256)
-    middle.writePosition(1550)
-    pinky.writePosition(1952)
-    pointer.writePosition(2536)
-    joint.writePosition(1916)   
+    ring.writePosition(ringClosePos)
+    thumb.writePosition(thumbClosePos)
+    middle.writePosition(middleClosePos)
+    pinky.writePosition(pinkyClosePos)
+    pointer.writePosition(pointerClosePos)
+    joint.writePosition(jointClosePos)   
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
