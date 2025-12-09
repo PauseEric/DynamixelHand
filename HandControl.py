@@ -601,6 +601,7 @@ def MotorPosControl(motorName, movement):
     dynamixel.updateMotorData()
 
 def checkAllPos():
+    dynamixel.updateMotorData()
     for motor in motor_list:
         print(motor.name)
         print(motor.PRESENT_POSITION_value)
