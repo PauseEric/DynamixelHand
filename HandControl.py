@@ -575,21 +575,21 @@ def disableHandMotors():
 
 def handOpen():    
     enableHandMotors()
-    ring.writePosition(1974)
-    thumb.writePosition(0)
-    middle.writePosition(1972)
-    pinky.writePosition(2475)
-    pointer.writePosition(2074)
+    ring.writePosition(2006)
+    thumb.writePosition(45)
+    middle.writePosition(2452)
+    pinky.writePosition(2058)
+    pointer.writePosition(2013)
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
 def handClose():
     enableHandMotors()
-    ring.writePosition(2550)
-    thumb.writePosition(360)
-    middle.writePosition(1600)
-    pinky.writePosition(2400)
-    pointer.writePosition(2500)
+    ring.writePosition(2515)
+    thumb.writePosition(256)
+    middle.writePosition(1952)
+    pinky.writePosition(1550)
+    pointer.writePosition(2536)
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
