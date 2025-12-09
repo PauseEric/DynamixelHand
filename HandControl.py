@@ -18,7 +18,6 @@ class DXL_Coms(object):
         self.groupBulkRead = MyGroupBucketRead(self.port_handler, self.packet_handler)
 
         self.__communicate_error_count = 0
-
         self.portHandler_Check_Pass = False
         #Opening Ports
         try:
@@ -102,7 +101,6 @@ class DXL_Coms(object):
         self.groupBulkWrite.txPacket()
         self.groupBulkWrite.clearParam()
 
-    def readHardwareError(self):
         for motor in self.motors:
             motor.readHardwareError()
 
@@ -120,7 +118,7 @@ class DXL_Coms(object):
 
 
 class DXL_Motor(object):
-    def __init___(self, port_h, package_h, Motor_number =1):
+    def __init__(self, port_h, package_h, Motor_number =1):
         #Control Table Default Values (set for XL330)
         self.name = None
         self.indirect_mode = False
