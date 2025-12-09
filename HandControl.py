@@ -65,6 +65,44 @@ class DXL_Coms(object):
         self.motors = []
         self.parm = []
 
+    def addAllBuckPrarmeter(self):
+        self.groupBulkRead.clearParam()
+        for motor in self.motors:
+            addr_list = list()
+            len_list = list()
+            for addr_info in motor.indirect_read_addr_info.values() if motor.indirect_mode else motor.read_addr_info.values():
+                addr_list.append(addr_info['ADDR'])
+                len_list.append(addr_info['LEN'])
+            motor.start_addr = min(addr_list)
+            motor.all_data_len = max(addr_list) - min(addr_list) + len_list[addr_list.index(max(addr_list))]
+            _ = self.groupBulkRead.addParam(motor.DXL_ID, motor.start_addr, motor.all_data_len)
+
+    def updateMotorData(self, update_all = True, num = 1,  delay=-1):
+        dxl_comm_result = self.groupBulkRead.txRxPacket()
+        if dxl_comm_result == dxlSDK.COMM_SUCCESS:
+            if update_all:
+                for motor in self.motors:
+                    if self.groupBulkRead.isAvailable(motor.DXL_ID, motor.start_addr, motor.all_data_len):
+                        motor.data = self.groupBulkRead.getData(motor.DXL_ID, motor.start_addr, motor.all_data_len)
+                        motor.updateValue()
+                    else:
+                        print("Motro {0} return data error".format(motor.DXL_ID))
+
+            else:
+                motor = self.motors[num - 1]
+                if self.groupBulkRead.isAvailable(motor.DXL_ID, motor.start_addr, motor.all_data_len):
+                    motor.data = self.groupBulkRead.getData(motor.DXL_ID, motor.start_addr, motor.all_data_len)
+                    motor.updateValue()
+                else:
+                    print("Motro {0} return data error".format(motor.DXL_ID))
+
+        else:
+            print("DXL: updateMotorData Failed: {0}".format(self.packet_handler.getTxRxResult(dxl_comm_result)))
+            self.__communicate_error_count += 1
+        if delay != -1:
+            o_time = time.monotonic()
+            while time.monotonic() - o_time <= delay/1000: pass
+
     def createMotor(self, name, motor_number = 1):
         if motor_number not in [motor.DXL_ID for motor in self.motors]:
             motor = DXL_Motor(self.port_handler, self.packet_handler, motor_number)
