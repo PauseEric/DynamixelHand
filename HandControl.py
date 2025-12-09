@@ -65,7 +65,7 @@ class DXL_Coms(object):
         self.motors = []
         self.parm = []
 
-    def addAllBuckPrarmeter(self):
+    def addAllBuckParameter(self):
         self.groupBulkRead.clearParam()
         for motor in self.motors:
             addr_list = list()
