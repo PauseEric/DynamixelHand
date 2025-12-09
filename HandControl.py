@@ -577,8 +577,8 @@ for motor in motor_list:
     Pinky: 1550
     
     thumb joint limits:
-    open: 
-    close: 
+    open: 1040
+    close: 1916
 """    
 def enableHandMotors():
     for motor in motor_list:
@@ -662,7 +662,7 @@ def main():
                     
                     Please Input a Position for the corresponding finger motor:
                     """))
-                    MotorPosControl(finger_cmd, pos_cmd)
+                    MotorPosControl(motor_name[finger_cmd], pos_cmd)
                     checkAllPos()
                 elif finger_cmd == 'b':
                     break
