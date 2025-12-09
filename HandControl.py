@@ -538,8 +538,8 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
 dynamixel = DXL_Coms(deviceSerial,B_Rate)
 ring = dynamixel.createMotor("ring", motor_number = 1)
 thumb = dynamixel.createMotor("thumb", motor_number = 2)
-middle = dynamixel.createMotor("middle", motor_number = 3)
-pinky = dynamixel.createMotor("pinky", motor_number = 4)
+middle = dynamixel.createMotor("middle", motor_number = 4)
+pinky = dynamixel.createMotor("pinky", motor_number = 3)
 pointer= dynamixel.createMotor("pointer", motor_number = 5)
 joint= dynamixel.createMotor("joint", motor_number = 6)
 
