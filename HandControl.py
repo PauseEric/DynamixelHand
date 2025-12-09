@@ -644,25 +644,29 @@ def main():
                 finger_cmd = input("Enter finger name (ring, thumb, middle, pinky, pointer, joint) or 'b' to go back: ")
                 if finger_cmd in motor_name.keys():
                     pos_cmd = int(input(""" 
-                    Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
-                    This function opens the hand by moving the motors to their maximum position values.
-    
-                    Values for Maximum Pos of Each Finger (Open Hand)
-                    Thumb: 45
-                    Pointer: 2013
-                    Middle:2452
-                    Ring: 2006
-                    Pinky: 2058
-                    
-                    Values for Minimum Pos of Each Finger (Closed Fist)
-                    Thumb: 256
-                    Pointer: 2536
-                    Middle: 1952
-                    Ring: 2515
-                    Pinky: 1550 
-                    
-                    
-                    Please Input a Position for the corresponding finger motor:
+Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
+This function opens the hand by moving the motors to their maximum position values.
+                
+Values for Maximum Pos of Each Finger (Open Hand)
+Thumb: 45
+Pointer: 2013
+Middle:2452
+Ring: 2006
+Pinky: 2058
+
+Values for Minimum Pos of Each Finger (Closed Fist)
+Thumb: 256
+Pointer: 2536
+Middle: 1952
+Ring: 2515
+Pinky: 1550 
+
+
+thumb joint limits:
+open: 1040
+close: 1916
+
+Please Input a Position for the corresponding finger motor:
                     """))
                     MotorPosControl(motor_name[finger_cmd], pos_cmd)
                     checkAllPos()
