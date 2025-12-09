@@ -591,8 +591,8 @@ def MotorPosControl(motorName, movement):
 
 def checkAllPos():
     for motor in motor_list:
-        print(motor.DXL_ID)
-        print(motor.infoParam('position'))
+        print(motor.name)
+        print(motor.PRESENT_POSITION_value)
         
         
 
@@ -606,6 +606,11 @@ def main():
     checkAllPos()
     for motor in motor_list:
         motor.disableMotor()
+        
+    input("Single actuator test, Please Press Enter to Move Thumb to Position 200")
+    MotorPosControl(middle,1600)
+    checkAllPos()
+    
     print("Program Exit")
 
 
