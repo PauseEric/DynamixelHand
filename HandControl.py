@@ -552,18 +552,18 @@ for motor in motor_list:
     This function opens the hand by moving the motors to their maximum position values.
     
     Values for Maximum Pos of Each Finger (Open Hand)
-    Thumb: 0
-    Pointer: 2074
-    Middle:1972
-    Ring: 1974
-    Pinky: 2475
+    Thumb: 45
+    Pointer: 2013
+    Middle:2452
+    Ring: 2006
+    Pinky: 2058
     
     Values for Minimum Pos of Each Finger (Closed Fist)
-    Thumb: 410
-    Pointer: 2590
-    Middle: 1537
-    Ring: 2551
-    Pinky: 1920
+    Thumb: 256
+    Pointer: 2536
+    Middle: 1952
+    Ring: 2515
+    Pinky: 1550
 """    
 def enableHandMotors():
     for motor in motor_list:
