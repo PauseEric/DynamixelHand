@@ -559,8 +559,8 @@ for motor in motor_list:
     motor.enableMotor()
     
 # Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
-thumbOpenPos = 45
-thumbClosePos = 283
+thumbOpenPos = 2080
+thumbClosePos = 2443
 pointerOpenPos = 2013
 pointerClosePos = 2593
 middleOpenPos = 2058
@@ -640,14 +640,14 @@ Hardware Limits on Motors Due to mechanical constraints of the hand, the motors 
     This function opens the hand by moving the motors to their maximum position values.
     
     Values for Maximum Pos of Each Finger (Open Hand)
-    Thumb: 45
+    Thumb: 2080
     Pointer: 2013
     Middle:2058 
     Ring: 2006
     Pinky: 2452
     
     Values for Minimum Pos of Each Finger (Closed Fist)
-    Thumb: 256
+    Thumb: 2443
     Pointer: 2536
     Middle: 1550
     Ring: 2515
