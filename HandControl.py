@@ -641,22 +641,22 @@ Hardware Limits on Motors Due to mechanical constraints of the hand, the motors 
     This function opens the hand by moving the motors to their maximum position values.
     
     Values for Maximum Pos of Each Finger (Open Hand)
-    Thumb: 2080
-    Pointer: 2013
-    Middle:2058 
-    Ring: 2006
-    Pinky: 2452
+    Thumb: 1040
+    Pointer: 1800  
+    Middle: 2475
+    Ring: 3700
+    Pinky: 3700
     
     Values for Minimum Pos of Each Finger (Closed Fist)
-    Thumb: 2443
-    Pointer: 2536
-    Middle: 1550
-    Ring: 2515
-    Pinky: 1952
+    Thumb: 1916
+    Pointer: 2840
+    Middle: 3410
+    Ring: 2000
+    Pinky: 2650
     
     thumb joint limits:
-    open: 1040
-    close: 1916
+    open: 800
+    close: 80
 
 Please Input a Position for the corresponding finger motor:
                     """))
