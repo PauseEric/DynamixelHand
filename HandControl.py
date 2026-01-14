@@ -19,7 +19,8 @@ LED_OFF = 0
 OPERATE_MODE_ADD_LEN = (11, 1)
 
 global deviceSerial, B_Rate
-deviceSerial = "/dev/ttyUSB0"
+deviceSerial = "COM3"    # Windows Example
+# deviceSerial = "/dev/ttyUSB0"  # Linux Example
 B_Rate = 57600
 
 #Communication for sending commands through Dynamixel motor controllers
@@ -534,13 +535,13 @@ class MyGroupBucketRead(dxlSDK.GroupBulkRead):
             
 # Hand-Related Controls
 
-#Hand Motor Initialisation
+#Hand Motor Initialisationo
 dynamixel = DXL_Coms(deviceSerial,B_Rate)
-ring = dynamixel.createMotor("ring", motor_number = 1)
+ring = dynamixel.createMotor("ring", motor_number = 4)
 thumb = dynamixel.createMotor("thumb", motor_number = 2)
-middle = dynamixel.createMotor("middle", motor_number = 4)
-pinky = dynamixel.createMotor("pinky", motor_number = 3)
-pointer= dynamixel.createMotor("pointer", motor_number = 5)
+middle = dynamixel.createMotor("middle", motor_number = 5)
+pinky = dynamixel.createMotor("pinky", motor_number = 1)
+pointer= dynamixel.createMotor("pointer", motor_number = 3)
 joint= dynamixel.createMotor("joint", motor_number = 6)
 
 #Mapping Motors to Names for using String to reference Motors
@@ -559,18 +560,18 @@ for motor in motor_list:
     motor.enableMotor()
     
 # Hardware Limits on Motors Due to mechanical constraints of the hand, the motors cannot reach their full range of motion.
-thumbOpenPos = 2080
-thumbClosePos = 2443
-pointerOpenPos = 2013
-pointerClosePos = 2593
-middleOpenPos = 2058
-middleClosePos = 1472
-ringOpenPos = 2006
-ringClosePos = 2590
-pinkyOpenPos = 2452
-pinkyClosePos = 1875
-jointOpenPos = 1040
-jointClosePos = 1916
+thumbOpenPos = 800
+thumbClosePos = 80
+pointerOpenPos = 1800
+pointerClosePos = 2840
+middleOpenPos = 2475
+middleClosePos = 3410
+ringOpenPos = 3700
+ringClosePos = 2000
+pinkyOpenPos = 3700
+pinkyClosePos = 2650
+jointOpenPos = 70
+jointClosePos = 1255
 
 def enableHandMotors():
     for motor in motor_list:
