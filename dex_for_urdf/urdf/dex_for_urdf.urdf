@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="dex_for_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.641929142468923 0.853564940458379 1.26807734088248"
+        rpy="0 0 0" />
+      <mass
+        value="0.181351463811566" />
+      <inertia
+        ixx="4.64352580271838E-05"
+        ixy="-5.0490425023366E-06"
+        ixz="1.60859697843744E-06"
+        iyy="5.5379297751376E-05"
+        iyz="4.03261302338248E-08"
+        izz="6.94511914111561E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="thumb_proximal_link">
+    <inertial>
+      <origin
+        xyz="0.00943087376540608 0.0242260476197766 0.0314059170690273"
+        rpy="0 0 0" />
+      <mass
+        value="0.0465101392877533" />
+      <inertia
+        ixx="9.30548574727843E-06"
+        ixy="-7.39532123026654E-07"
+        ixz="-1.17050833013237E-06"
+        iyy="8.62330334162714E-06"
+        iyz="-2.82186822471655E-06"
+        izz="5.32449528366124E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxthumbjt"
+    type="continuous">
+    <origin
+      xyz="0.664698049096623 -1.27050066917983 0.814586879190688"
+      rpy="1.5707963267949 0 0.636970856441748" />
+    <parent
+      link="base_link" />
+    <child
+      link="thumb_proximal_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="thumb_middle_link">
+    <inertial>
+      <origin
+        xyz="-0.0147085424490503 -0.0022359769691106 0.00146049999999354"
+        rpy="0 0 0" />
+      <mass
+        value="0.00237356483439232" />
+      <inertia
+        ixx="1.29616441015468E-07"
+        ixy="3.65292485570084E-08"
+        ixz="-3.87120526674817E-22"
+        iyy="2.67532655893698E-07"
+        iyz="-3.50724579722484E-22"
+        izz="1.95973867602164E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midthumbjt"
+    type="continuous">
+    <origin
+      xyz="0.0146515478673566 0.0469839038586194 0.0583465730403765"
+      rpy="-1.86431062795871 0.570167700999992 -1.73251487627611" />
+    <parent
+      link="thumb_proximal_link" />
+    <child
+      link="thumb_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="thumb_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00252187363152856 0.011624134713339 0.00386175438141101"
+        rpy="0 0 0" />
+      <mass
+        value="0.00454227086585782" />
+      <inertia
+        ixx="1.9260920328424E-07"
+        ixy="-1.62081918690406E-08"
+        ixz="1.30476449015295E-08"
+        iyy="1.98487074125629E-07"
+        iyz="-5.12079562162879E-08"
+        izz="2.46837106543801E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/thumb_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalthumbjt"
+    type="continuous">
+    <origin
+      xyz="-0.0311623945164679 0.00457200000000002 0"
+      rpy="-3.14159265358972 -1.32477097525061 -1.86450625905758" />
+    <parent
+      link="thumb_middle_link" />
+    <child
+      link="thumb_distal_link" />
+    <axis
+      xyz="0.969888109539163 0 -0.243550928913335" />
+  </joint>
+  <link
+    name="pointer_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212397453796422 -0.00455683053787204 -0.00749508167179203"
+        rpy="0 0 0" />
+      <mass
+        value="0.00340351995438899" />
+      <inertia
+        ixx="1.90350853204294E-07"
+        ixy="2.21224211582987E-08"
+        ixz="2.6306349650022E-10"
+        iyy="5.6876923490411E-07"
+        iyz="3.2288254007045E-11"
+        izz="5.41183653928771E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxpointerjt"
+    type="continuous">
+    <origin
+      xyz="0.665650549096623 -1.27964466917983 0.898125438097141"
+      rpy="1.5707963267949 1.54971350600786 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="pointer_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pointer_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538077 -0.0043478174193734 0.00798443440700758"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046311" />
+      <inertia
+        ixx="9.9152566435551E-08"
+        ixy="1.20393203024074E-08"
+        ixz="1.8573568428043E-08"
+        iyy="3.46628549122708E-07"
+        iyz="-1.28947331876373E-09"
+        izz="3.24595383967733E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midpointerjt"
+    type="continuous">
+    <origin
+      xyz="-0.0431800000000068 0 -0.00025400000000575"
+      rpy="3.14159265358979 0 2.90227433271792" />
+    <parent
+      link="pointer_proximal_link" />
+    <child
+      link="pointer_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pointer_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628090379 0.011691147358903 -0.00748905404587286"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256363" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.58534443923462E-09"
+        ixz="-1.53025119292648E-09"
+        iyy="8.3774189207232E-08"
+        iyz="-7.02657699368693E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pointer_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalpointerjt"
+    type="continuous">
+    <origin
+      xyz="0.02667 0 0.000254"
+      rpy="3.1416 0 1.6037" />
+    <parent
+      link="pointer_middle_link" />
+    <child
+      link="pointer_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="middle_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212923689434312 -0.00456812016141717 -0.00747776118326027"
+        rpy="0 0 0" />
+      <mass
+        value="0.00339510694405002" />
+      <inertia
+        ixx="1.89751783332399E-07"
+        ixy="2.2938562382008E-08"
+        ixz="-9.89033727413894E-10"
+        iyy="5.64541180329566E-07"
+        iyz="-2.36339305981695E-10"
+        izz="5.37182102142717E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxmiddlejt"
+    type="continuous">
+    <origin
+      xyz="0.64774 -1.2796 0.89813"
+      rpy="1.5708 1.461 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="middle_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="middle_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538075 -0.0043478174193734 0.00798443440700736"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046311" />
+      <inertia
+        ixx="9.91525664355507E-08"
+        ixy="1.20393203024075E-08"
+        ixz="1.85735684280425E-08"
+        iyy="3.46628549122705E-07"
+        iyz="-1.28947331876397E-09"
+        izz="3.2459538396773E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midmiddlejt"
+    type="continuous">
+    <origin
+      xyz="-0.04318 0 -0.000253999999999865"
+      rpy="3.14159265358979 0 2.25803720163224" />
+    <parent
+      link="middle_proximal_link" />
+    <child
+      link="middle_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="middle_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628090379 0.0116911473589025 -0.00748905404587308"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256362" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.58534443923484E-09"
+        ixz="-1.53025119292645E-09"
+        iyy="8.37741892072318E-08"
+        iyz="-7.02657699368699E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/middle_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalmiddlejt"
+    type="continuous">
+    <origin
+      xyz="0.0266699999999995 0 0.000254000000002863"
+      rpy="3.14159265358979 0 1.04814775501242" />
+    <parent
+      link="middle_middle_link" />
+    <child
+      link="middle_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212923689937761 -0.00456812016941432 -0.00751241247663725"
+        rpy="0 0 0" />
+      <mass
+        value="0.00339510727346776" />
+      <inertia
+        ixx="1.8975128295522E-07"
+        ixy="2.29385633357861E-08"
+        ixz="1.51590385008428E-09"
+        iyy="5.64540676580617E-07"
+        iyz="3.01075417902902E-10"
+        izz="5.37182091548693E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxringjt"
+    type="continuous">
+    <origin
+      xyz="0.62742 -1.2796 0.89813"
+      rpy="-1.5708 1.4332 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="ring_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538077 -0.00434781741937362 0.00798443440700725"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046309" />
+      <inertia
+        ixx="9.91525664355494E-08"
+        ixy="1.20393203024075E-08"
+        ixz="1.85735684280422E-08"
+        iyy="3.46628549122704E-07"
+        iyz="-1.28947331876381E-09"
+        izz="3.24595383967729E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midringjt"
+    type="continuous">
+    <origin
+      xyz="-0.0431799999999998 0 -0.000253999999999976"
+      rpy="3.14159265358979 0 3.05678690328649" />
+    <parent
+      link="ring_proximal_link" />
+    <child
+      link="ring_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628091312 0.0116911473588974 -0.00748905404587286"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256363" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.58534443923479E-09"
+        ixz="-1.53025119292645E-09"
+        iyy="8.3774189207232E-08"
+        iyz="-7.02657699368699E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/ring_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalringjt"
+    type="continuous">
+    <origin
+      xyz="0.02667 0 0.000253999999999976"
+      rpy="3.14159265358979 0 1.59957347554383" />
+    <parent
+      link="ring_middle_link" />
+    <child
+      link="ring_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212397466237486 -0.00455683024667897 -0.00749508167691482"
+        rpy="0 0 0" />
+      <mass
+        value="0.00340351800018726" />
+      <inertia
+        ixx="1.90350910041799E-07"
+        ixy="2.2122420053805E-08"
+        ixz="2.63061444247556E-10"
+        iyy="5.68769327641388E-07"
+        iyz="3.22873238625855E-11"
+        izz="5.41183703503979E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxpinkyjt"
+    type="continuous">
+    <origin
+      xyz="0.609262549096623 -1.27964466917983 0.898125438097141"
+      rpy="-1.5707963267949 1.35576676133764 1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="pinky_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538079 -0.00434781741937318 0.00798443440700736"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046312" />
+      <inertia
+        ixx="9.91525664355508E-08"
+        ixy="1.20393203024083E-08"
+        ixz="1.85735684280424E-08"
+        iyy="3.46628549122708E-07"
+        iyz="-1.28947331876381E-09"
+        izz="3.24595383967733E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midpinkyjt"
+    type="continuous">
+    <origin
+      xyz="-0.04318 0 -0.000253999999999976"
+      rpy="3.14159265358979 0 -3.14159265358944" />
+    <parent
+      link="pinky_proximal_link" />
+    <child
+      link="pinky_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628091267 0.011691147358897 -0.00748905404587286"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256371" />
+      <inertia
+        ixx="1.88836780110083E-07"
+        ixy="-8.58534443923384E-09"
+        ixz="-1.53025119292642E-09"
+        iyy="8.37741892072341E-08"
+        iyz="-7.02657699368685E-09"
+        izz="1.62073268935826E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dex_for_urdf/meshes/pinky_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalpinkyjt"
+    type="continuous">
+    <origin
+      xyz="0.0266700000000002 0 0.000253999999999976"
+      rpy="3.14159265358979 0 1.49950632885339" />
+    <parent
+      link="pinky_middle_link" />
+    <child
+      link="pinky_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>

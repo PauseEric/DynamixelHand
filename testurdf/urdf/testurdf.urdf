@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="testurdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.641929142475532 -1.26807734088086 0.853564940455791"
+        rpy="0 0 0" />
+      <mass
+        value="0.181351463824276" />
+      <inertia
+        ixx="4.64352580263178E-05"
+        ixy="-1.60859698513833E-06"
+        ixz="-5.04904249808737E-06"
+        iyy="6.94511914152641E-05"
+        iyz="-4.03261303886393E-08"
+        izz="5.5379297756951E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="thumb_proximal_link">
+    <inertial>
+      <origin
+        xyz="0.00943087376540641 0.0242260476197754 0.0314059170690262"
+        rpy="0 0 0" />
+      <mass
+        value="0.0465101392877533" />
+      <inertia
+        ixx="9.30548574727832E-06"
+        ixy="-7.39532123026703E-07"
+        ixz="-1.17050833013251E-06"
+        iyy="8.62330334162692E-06"
+        iyz="-2.82186822471662E-06"
+        izz="5.32449528366118E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxthumbjt"
+    type="revolute">
+    <origin
+      xyz="0.6647 -1.2705 0.81459"
+      rpy="1.5708 0 0.63697" />
+    <parent
+      link="base_link" />
+    <child
+      link="thumb_proximal_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="thumb_middle_link">
+    <inertial>
+      <origin
+        xyz="-0.0147085424490503 -0.0022359769691106 0.00146049999999354"
+        rpy="0 0 0" />
+      <mass
+        value="0.00237356483439232" />
+      <inertia
+        ixx="1.29616441015468E-07"
+        ixy="3.65292485570083E-08"
+        ixz="-3.93737971575241E-22"
+        iyy="2.67532655893698E-07"
+        iyz="-3.97046694025453E-22"
+        izz="1.95973867602164E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midthumbjt"
+    type="revolute">
+    <origin
+      xyz="0.014652 0.046984 0.058347"
+      rpy="-1.8643 0.57017 -1.7325" />
+    <parent
+      link="thumb_proximal_link" />
+    <child
+      link="thumb_middle_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="thumb_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00252187363152856 0.011624134713339 0.00386175438141101"
+        rpy="0 0 0" />
+      <mass
+        value="0.00454227086585782" />
+      <inertia
+        ixx="1.9260920328424E-07"
+        ixy="-1.62081918690406E-08"
+        ixz="1.30476449015295E-08"
+        iyy="1.98487074125629E-07"
+        iyz="-5.12079562162879E-08"
+        izz="2.46837106543801E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/thumb_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalthumbjt"
+    type="revolute">
+    <origin
+      xyz="-0.031162 0.004572 0"
+      rpy="-3.1416 -1.3248 -1.8645" />
+    <parent
+      link="thumb_middle_link" />
+    <child
+      link="thumb_distal_link" />
+    <axis
+      xyz="0.96989 0 -0.24355" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="pointer_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212397453796422 -0.00455683053787204 -0.00749508167179203"
+        rpy="0 0 0" />
+      <mass
+        value="0.00340351995438899" />
+      <inertia
+        ixx="1.90350853204294E-07"
+        ixy="2.21224211582987E-08"
+        ixz="2.63063496500219E-10"
+        iyy="5.6876923490411E-07"
+        iyz="3.22882540070348E-11"
+        izz="5.41183653928771E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxpointerjt"
+    type="revolute">
+    <origin
+      xyz="0.66565 -1.2796 0.89813"
+      rpy="1.5708 1.5497 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="pointer_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="pointer_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538077 -0.0043478174193734 0.00798443440700758"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046311" />
+      <inertia
+        ixx="9.9152566435551E-08"
+        ixy="1.20393203024074E-08"
+        ixz="1.8573568428043E-08"
+        iyy="3.46628549122708E-07"
+        iyz="-1.28947331876373E-09"
+        izz="3.24595383967733E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midpointerjt"
+    type="revolute">
+    <origin
+      xyz="-0.04318 0 -0.000254"
+      rpy="3.1416 0 2.9023" />
+    <parent
+      link="pointer_proximal_link" />
+    <child
+      link="pointer_middle_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="pointer_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628090379 0.0116911473589032 -0.00748905404587297"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256363" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.5853444392346E-09"
+        ixz="-1.53025119292647E-09"
+        iyy="8.37741892072319E-08"
+        iyz="-7.02657699368692E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pointer_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalpointerjt"
+    type="revolute">
+    <origin
+      xyz="0.02667 0 0.000254"
+      rpy="3.1416 0 1.6037" />
+    <parent
+      link="pointer_middle_link" />
+    <child
+      link="pointer_distal_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="3"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="middle_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212923689434312 -0.00456812016141694 -0.00747776118326016"
+        rpy="0 0 0" />
+      <mass
+        value="0.00339510694405002" />
+      <inertia
+        ixx="1.89751783332399E-07"
+        ixy="2.29385623820079E-08"
+        ixz="-9.89033727413909E-10"
+        iyy="5.64541180329566E-07"
+        iyz="-2.3633930598169E-10"
+        izz="5.37182102142717E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxmiddlejt"
+    type="continuous">
+    <origin
+      xyz="0.64774 -1.2796 0.89813"
+      rpy="1.5708 1.461 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="middle_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="middle_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538077 -0.0043478174193734 0.00798443440700747"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046311" />
+      <inertia
+        ixx="9.91525664355507E-08"
+        ixy="1.20393203024075E-08"
+        ixz="1.85735684280425E-08"
+        iyy="3.46628549122705E-07"
+        iyz="-1.28947331876398E-09"
+        izz="3.2459538396773E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midmiddlejt"
+    type="continuous">
+    <origin
+      xyz="-0.04318 0 -0.000253999999999865"
+      rpy="3.14159265358979 0 2.25803720163224" />
+    <parent
+      link="middle_proximal_link" />
+    <child
+      link="middle_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="middle_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628090379 0.0116911473589025 -0.00748905404587308"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256362" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.58534443923481E-09"
+        ixz="-1.53025119292644E-09"
+        iyy="8.37741892072318E-08"
+        iyz="-7.02657699368699E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/middle_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalmiddlejt"
+    type="continuous">
+    <origin
+      xyz="0.0266699999999995 0 0.000254000000002863"
+      rpy="3.14159265358979 0 1.04814775501242" />
+    <parent
+      link="middle_middle_link" />
+    <child
+      link="middle_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212923689937761 -0.0045681201694141 -0.00751241247663736"
+        rpy="0 0 0" />
+      <mass
+        value="0.00339510727346776" />
+      <inertia
+        ixx="1.8975128295522E-07"
+        ixy="2.29385633357861E-08"
+        ixz="1.51590385008428E-09"
+        iyy="5.64540676580617E-07"
+        iyz="3.01075417902906E-10"
+        izz="5.37182091548693E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxringjt"
+    type="continuous">
+    <origin
+      xyz="0.62742 -1.2796 0.89813"
+      rpy="-1.5708 1.4332 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="ring_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538077 -0.00434781741937362 0.00798443440700725"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046309" />
+      <inertia
+        ixx="9.91525664355494E-08"
+        ixy="1.20393203024075E-08"
+        ixz="1.85735684280422E-08"
+        iyy="3.46628549122704E-07"
+        iyz="-1.28947331876381E-09"
+        izz="3.24595383967729E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midringjt"
+    type="continuous">
+    <origin
+      xyz="-0.0431799999999998 0 -0.000253999999999976"
+      rpy="3.14159265358979 0 3.05678690328649" />
+    <parent
+      link="ring_proximal_link" />
+    <child
+      link="ring_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="ring_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628091312 0.0116911473588974 -0.00748905404587286"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256363" />
+      <inertia
+        ixx="1.88836780110076E-07"
+        ixy="-8.58534443923477E-09"
+        ixz="-1.53025119292644E-09"
+        iyy="8.3774189207232E-08"
+        iyz="-7.02657699368698E-09"
+        izz="1.6207326893582E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/ring_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalringjt"
+    type="continuous">
+    <origin
+      xyz="0.02667 0 0.000253999999999976"
+      rpy="3.14159265358979 0 1.59957347554383" />
+    <parent
+      link="ring_middle_link" />
+    <child
+      link="ring_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_proximal_link">
+    <inertial>
+      <origin
+        xyz="-0.0212397466237486 -0.00455683024667897 -0.00749508167691482"
+        rpy="0 0 0" />
+      <mass
+        value="0.00340351800018726" />
+      <inertia
+        ixx="1.90350910041799E-07"
+        ixy="2.2122420053805E-08"
+        ixz="2.6306144424756E-10"
+        iyy="5.68769327641389E-07"
+        iyz="3.22873238625886E-11"
+        izz="5.41183703503979E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_proximal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_proximal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="proxpinkyjt"
+    type="continuous">
+    <origin
+      xyz="0.609262549096623 -1.27964466917983 0.898125438097141"
+      rpy="-1.5707963267949 1.35576676133764 1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="pinky_proximal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_middle_link">
+    <inertial>
+      <origin
+        xyz="0.0148334053538079 -0.00434781741937318 0.00798443440700725"
+        rpy="0 0 0" />
+      <mass
+        value="0.00291570286046311" />
+      <inertia
+        ixx="9.91525664355508E-08"
+        ixy="1.20393203024083E-08"
+        ixz="1.85735684280424E-08"
+        iyy="3.46628549122708E-07"
+        iyz="-1.28947331876382E-09"
+        izz="3.24595383967733E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_middle_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_middle_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="midpinkyjt"
+    type="continuous">
+    <origin
+      xyz="-0.04318 0 -0.000253999999999976"
+      rpy="3.14159265358979 0 -3.14159265358944" />
+    <parent
+      link="pinky_proximal_link" />
+    <child
+      link="pinky_middle_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="pinky_distal_link">
+    <inertial>
+      <origin
+        xyz="0.00313849628091245 0.011691147358897 -0.00748905404587286"
+        rpy="0 0 0" />
+      <mass
+        value="0.00355018220256371" />
+      <inertia
+        ixx="1.88836780110083E-07"
+        ixy="-8.58534443923385E-09"
+        ixz="-1.53025119292642E-09"
+        iyy="8.37741892072341E-08"
+        iyz="-7.02657699368686E-09"
+        izz="1.62073268935826E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_distal_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://testurdf/meshes/pinky_distal_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="distalpinkyjt"
+    type="continuous">
+    <origin
+      xyz="0.0266700000000002 0 0.000253999999999976"
+      rpy="3.14159265358979 0 1.49950632885339" />
+    <parent
+      link="pinky_middle_link" />
+    <child
+      link="pinky_distal_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>
