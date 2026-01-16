@@ -40,21 +40,50 @@ distal_pinky_actuator_id = model.actuator('pos_distalpinky').id
 #     data.ctrl[0] = error * Kp # Kp is a proportional gain
 
 
+def thumbController(prox, mid, dist):
+    data.ctrl[prox_thumb_actuator_id] = prox
+    data.ctrl[mid_thumb_actuator_id] = mid
+    data.ctrl[distal_thumb_actuator_id] = dist
+
+def pointerController(prox, mid, dist):
+    data.ctrl[prox_pointer_actuator_id] = prox
+    data.ctrl[mid_pointer_actuator_id] = mid
+    data.ctrl[distal_pointer_actuator_id] = dist
+
+def middleController(prox, mid, dist):
+    data.ctrl[prox_middle_actuator_id] = prox
+    data.ctrl[mid_middle_actuator_id] = mid
+    data.ctrl[distal_middle_actuator_id] = dist
+
+def ringController(prox, mid, dist):
+    data.ctrl[prox_ring_actuator_id] = prox
+    data.ctrl[mid_ring_actuator_id] = mid
+    data.ctrl[distal_ring_actuator_id] = dist
+
+def pinkyController(prox, mid, dist):
+    data.ctrl[prox_pinky_actuator_id] = prox
+    data.ctrl[mid_pinky_actuator_id] = mid
+    data.ctrl[distal_pinky_actuator_id] = dist
+
+
+
 def main():
     print("Running Main Sequence")
      #Launch the interactive viewer
     with mujoco.viewer.launch_passive(model, data) as viewer:
         # Keep the viewer running until the user closes it
         while viewer.is_running():
-            data.ctrl[prox_pointer_actuator_id]=0
-            data.ctrl[mid_thumb_actuator_id]=0
-            data.ctrl[distal_thumb_actuator_id]=0.5
-            data.ctrl[prox_thumb_actuator_id]=0.5
+
+            data.ctrl[prox_thumb_actuator_id]=1
+            data.ctrl[mid_thumb_actuator_id]=1
+            data.ctrl[distal_thumb_actuator_id]=1
+            
+
             # Step the simulation
             mujoco.mj_step(model, data)
             #Sim Additional Updates Here
-            
 
+        
             # Update the viewer
             viewer.sync()
 

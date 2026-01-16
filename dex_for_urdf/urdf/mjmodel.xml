@@ -1,6 +1,6 @@
 <mujoco model="dex_for_urdf">
   <compiler angle="radian"/>
-  <option timestep="0.0005" />
+  <option timestep="0.001" gravity ="0 0 0" />
   <asset>
     <mesh name="base_link" content_type="model/stl" file="base_link.STL"/>
     <mesh name="thumb_proximal_link" content_type="model/stl" file="thumb_proximal_link.STL"/>
@@ -21,96 +21,100 @@
   </asset>
   <default>
     <geom friction="1 0.005 0.0001" density="500"/>
-      <default class = "finger_joint">
-        <joint type= "hinge" limited="true" damping="0.1" stiffness="0"/>
+      <default class = "proxjt">
+        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 2"/>
+      </default>
+      <default class = "midjt">
+        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 2"/>
+      </default>
+      <default class = "distjt">
+        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 2"/>
       </default>
       <default class = "proximal_joint_actuator">
-        <position ctrlrange="-1.57 1.57"/>
+        <position ctrlrange="0 2" kp ="500" kv = "10" gear = "-1"/>
       </default>
       <default class = "middle_joint_actuator">
-        <position ctrlrange="-1.57 1.57"/>
+        <position ctrlrange="0 2" kp ="500" kv = "10" gear = "-1"/>
       </default>
       <default class = "distal_joint_actuator">
-        <position ctrlrange="-1.57 1.57"/>  
+        <position ctrlrange="0 2" kp ="500" kv = "10" gear = "-1"/>  
       </default>
   </default>
-
-  
 
     
   <worldbody>
     <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="base_link"/>
     <body name="thumb_proximal_link" pos="0.664698 -1.2705 0.814587" quat="0.671547 0.671547 0.221415 0.221415">
       <inertial pos="0.00943087 0.024226 0.0314059" quat="0.668244 -0.0912273 0.264291 0.689403" mass="0.0465101" diaginertia="1.02478e-05 9.62323e-06 3.38226e-06"/>
-      <joint name="proxthumbjt" pos="0 0 0" axis="0 1 0"/>
+      <joint name="proxthumbjt" class ="proxjt" pos="0 0 0" axis="0 1 0"/>
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="thumb_proximal_link"/>
       <body name="thumb_middle_link" pos="0.0146515 0.0469839 0.0583466" quat="0.542549 -0.371307 0.695634 -0.289595">
         <inertial pos="-0.0147085 -0.00223598 0.0014605" quat="0.55704 0.55704 0.435553 0.435553" mass="0.00237356" diaginertia="2.7661e-07 1.95974e-07 1.20539e-07"/>
-        <joint name="midthumbjt" pos="0 0 0" axis="0 0 1"/>
+        <joint name="midthumbjt" class="midjt" pos="0 0 0" axis="0 0 1"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="thumb_middle_link"/>
         <body name="thumb_distal_link" pos="-0.0311624 0.004572 0" quat="-0.493823 -0.469983 0.63316 -0.366556">
           <inertial pos="0.00252187 0.0116241 0.00386175" quat="0.459216 0.628774 -0.586675 0.222659" mass="0.00454227" diaginertia="2.83573e-07 1.90125e-07 1.64236e-07"/>
-          <joint name="distalthumbjt" pos="0 0 0" axis="0.969888 0 -0.243551"/>
+          <joint name="distalthumbjt" class= "distjt" pos="0 0 0" axis="0.969888 0 -0.243551"/>
           <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="thumb_distal_link"/>
         </body>
       </body>
     </body>
     <body name="pointer_proximal_link" pos="0.665651 -1.27964 0.898125" quat="0.00745376 0.707067 -0.00745376 -0.707067">
       <inertial pos="-0.0212397 -0.00455683 -0.00749508" quat="0.513745 0.514925 0.484997 0.485485" mass="0.00340352" diaginertia="5.70058e-07 5.41184e-07 1.89062e-07"/>
-      <joint name="proxpointerjt" pos="0 0 0" axis="0 0 1"/>
+      <joint name="proxpointerjt" class="proxjt" pos="0 0 0" axis="0 0 1"/>
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pointer_proximal_link"/>
       <body name="pointer_middle_link" pos="-0.04318 0 -0.000254" quat="0 0.119374 0.992849 0">
         <inertial pos="0.0148334 -0.00434782 0.00798443" quat="0.49495 0.527804 0.512044 0.462881" mass="0.0029157" diaginertia="3.4722e-07 3.26111e-07 9.70455e-08"/>
-        <joint name="midpointerjt" pos="0 0 0" axis="0 0 1"/>
+        <joint name="midpointerjt" class = "midjt" pos="0 0 0" axis="0 0 1"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pointer_middle_link"/>
         <body name="pointer_distal_link" pos="0.02667 0 0.000254" quat="-2.55427e-06 0.695378 0.718644 -2.63973e-06">
           <inertial pos="0.0031385 0.0116911 -0.00748905" quat="0.673689 0.737757 -0.0170683 -0.0395699" mass="0.00355018" diaginertia="1.89568e-07 1.62677e-07 8.24393e-08"/>
-          <joint name="distalpointerjt" pos="0 0 0" axis="0 0 1"/>
+          <joint name="distalpointerjt" class= "distjt" pos="0 0 0" axis="0 0 1"/>
           <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pointer_distal_link"/>
         </body>
       </body>
     </body>
     <body name="middle_proximal_link" pos="0.64774 -1.2796 0.89813" quat="0.0387968 0.706042 -0.038802 -0.706042">
       <inertial pos="-0.0212924 -0.00456812 -0.00747776" quat="0.5182 0.511775 0.48651 0.482559" mass="0.00339511" diaginertia="5.65943e-07 5.37182e-07 1.8835e-07"/>
-      <joint name="proxmiddlejt" pos="0 0 0" axis="0 0 1"/>
+      <joint name="proxmiddlejt" class= "proxjt" pos="0 0 0" axis="0 0 1"/>
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="middle_proximal_link"/>
       <body name="middle_middle_link" pos="-0.04318 0 -0.000254" quat="0 0.427547 0.903993 0">
         <inertial pos="0.0148334 -0.00434782 0.00798443" quat="0.49495 0.527804 0.512044 0.462881" mass="0.0029157" diaginertia="3.4722e-07 3.26111e-07 9.70455e-08"/>
-        <joint name="midmiddlejt" pos="0 0 0" axis="0 0 1"/>
+        <joint name="midmiddlejt" class = "midjt" pos="0 0 0" axis="0 0 1"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="middle_middle_link"/>
         <body name="middle_distal_link" pos="0.02667 0 0.000254" quat="0 0.865788 0.500411 0">
           <inertial pos="0.0031385 0.0116911 -0.00748905" quat="0.673689 0.737757 -0.0170683 -0.0395699" mass="0.00355018" diaginertia="1.89568e-07 1.62677e-07 8.24393e-08"/>
-          <joint name="distalmiddlejt" pos="0 0 0" axis="0 0 1"/>
+          <joint name="distalmiddlejt" class = "distjt" pos="0 0 0" axis="0 0 1"/>
           <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="middle_distal_link"/>
         </body>
       </body>
     </body>
     <body name="ring_proximal_link" pos="0.62742 -1.2796 0.89813" quat="0.0486067 -0.705434 -0.0486119 0.705434">
       <inertial pos="-0.0212924 -0.00456812 -0.00751241" quat="0.510572 0.519396 0.482048 0.487005" mass="0.00339511" diaginertia="5.65945e-07 5.37183e-07 1.88346e-07"/>
-      <joint name="proxringjt" pos="0 0 0" axis="0 0 1"/>
+      <joint name="proxringjt" class ="proxjt" pos="0 0 0" axis="0 0 1"/>
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="ring_proximal_link"/>
       <body name="ring_middle_link" pos="-0.04318 0 -0.000254" quat="0 0.0423902 0.999101 0">
         <inertial pos="0.0148334 -0.00434782 0.00798443" quat="0.49495 0.527804 0.512044 0.462881" mass="0.0029157" diaginertia="3.4722e-07 3.26111e-07 9.70455e-08"/>
-        <joint name="midringjt" pos="0 0 0" axis="0 0 1"/>
+        <joint name="midringjt" class = "midjt" pos="0 0 0" axis="0 0 1"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="ring_middle_link"/>
         <body name="ring_distal_link" pos="0.02667 0 0.000254" quat="0 0.69686 0.717207 0">
           <inertial pos="0.0031385 0.0116911 -0.00748905" quat="0.673689 0.737757 -0.0170683 -0.0395699" mass="0.00355018" diaginertia="1.89568e-07 1.62677e-07 8.24393e-08"/>
-          <joint name="distalringjt" pos="0 0 0" axis="0 0 1"/>
+          <joint name="distalringjt" class = "distjt" pos="0 0 0" axis="0 0 1"/>
           <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="ring_distal_link"/>
         </body>
       </body>
     </body>
     <body name="pinky_proximal_link" pos="0.609263 -1.27964 0.898125" quat="0.0758781 -0.703024 -0.0758781 0.703024">
       <inertial pos="-0.0212397 -0.00455683 -0.00749508" quat="0.513745 0.514925 0.484997 0.485485" mass="0.00340352" diaginertia="5.70058e-07 5.41184e-07 1.89062e-07"/>
-      <joint name="proxpinkyjt" pos="0 0 0" axis="0 0 1"/>
+      <joint name="proxpinkyjt" class= "proxjt" pos="0 0 0" axis="0 0 1"/>
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pinky_proximal_link"/>
       <body name="pinky_middle_link" pos="-0.04318 0 -0.000254" quat="0 0 -1 0">
         <inertial pos="0.0148334 -0.00434782 0.00798443" quat="0.49495 0.527804 0.512044 0.462881" mass="0.0029157" diaginertia="3.4722e-07 3.26111e-07 9.70455e-08"/>
-        <joint name="midpinkyjt" pos="0 0 0" axis="0 0 1"/>
+        <joint name="midpinkyjt" class = "midjt" pos="0 0 0" axis="0 0 1"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pinky_middle_link"/>
         <body name="pinky_distal_link" pos="0.02667 0 0.000254" quat="0 0.731857 0.681458 0">
           <inertial pos="0.0031385 0.0116911 -0.00748905" quat="0.673689 0.737757 -0.0170683 -0.0395699" mass="0.00355018" diaginertia="1.89568e-07 1.62677e-07 8.24393e-08"/>
-          <joint name="distalpinkyjt" pos="0 0 0" axis="0 0 1"/>
+          <joint name="distalpinkyjt" class= "distjt" pos="0 0 0" axis="0 0 1"/>
           <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="pinky_distal_link"/>
         </body>
       </body>
@@ -118,21 +122,21 @@
 
 
   </worldbody>
-    <actuator>
-      <position name="pos_proxthumb" joint="proxthumbjt" class= "proximal_joint_actuator" />
-      <position name="pos_midthumb" joint="midthumbjt" class= "middle_joint_actuator" />
-      <position name="pos_distalthumb" joint="distalthumbjt" class= "distal_joint_actuator" />
-      <position name="pos_proxpointer" joint="proxpointerjt" class = "proximal_joint_actuator" />
-      <position name="pos_midpointer" joint="midpointerjt" class = "middle_joint_actuator"/>
-      <position name="pos_distalpointer" joint="distalpointerjt" class ="distal_joint_actuator"/>
-      <position name="pos_proxmiddle" joint="proxmiddlejt" class="proximal_joint_actuator"/>
-      <position name="pos_midmiddle" joint="midmiddlejt" class= "middle_joint_actuator"/> 
-      <position name="pos_distalmiddle" joint="distalmiddlejt" class = "distal_joint_actuator"/>
-      <position name="pos_proxring" joint="proxringjt" class= "proximal_joint_actuator"/>
-      <position name="pos_midring" joint="midringjt" class= "middle_joint_actuator"/>
-      <position name="pos_distalring" joint="distalringjt" class = "distal_joint_actuator"/>
-      <position name="pos_proxpinky" joint="proxpinkyjt" class= "proximal_joint_actuator"/>
-      <position name="pos_midpinky" joint="midpinkyjt" class= "middle_joint_actuator"/>
-      <position name="pos_distalpinky" joint="distalpinkyjt" class = "distal_joint_actuator"/> 
-    </actuator>
+  <actuator>
+    <position name="pos_proxthumb" joint="proxthumbjt" class= "proximal_joint_actuator" />
+    <position name="pos_midthumb" joint="midthumbjt" class= "middle_joint_actuator" />
+    <position name="pos_distalthumb" joint="distalthumbjt" class= "distal_joint_actuator" />
+    <position name="pos_proxpointer" joint="proxpointerjt" class = "proximal_joint_actuator" />
+    <position name="pos_midpointer" joint="midpointerjt" class = "middle_joint_actuator"/>
+    <position name="pos_distalpointer" joint="distalpointerjt" class ="distal_joint_actuator"/>
+    <position name="pos_proxmiddle" joint="proxmiddlejt" class="proximal_joint_actuator"/>
+    <position name="pos_midmiddle" joint="midmiddlejt" class= "middle_joint_actuator"/> 
+    <position name="pos_distalmiddle" joint="distalmiddlejt" class = "distal_joint_actuator"/>
+    <position name="pos_proxring" joint="proxringjt" class= "proximal_joint_actuator"/>
+    <position name="pos_midring" joint="midringjt" class= "middle_joint_actuator"/>
+    <position name="pos_distalring" joint="distalringjt" class = "distal_joint_actuator"/>
+    <position name="pos_proxpinky" joint="proxpinkyjt" class= "proximal_joint_actuator"/>
+    <position name="pos_midpinky" joint="midpinkyjt" class= "middle_joint_actuator"/>
+    <position name="pos_distalpinky" joint="distalpinkyjt" class = "distal_joint_actuator"/> 
+  </actuator>
 </mujoco>
