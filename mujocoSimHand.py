@@ -1,7 +1,7 @@
 import mujoco
 import mujoco.viewer
 import math
-
+import time
 # Define the path to your URDF file
 urdf_path = "testurdf/urdf/testurdf.urdf"
 xml_path = "dex_for_urdf/urdf/mjmodel.xml"
@@ -40,23 +40,21 @@ proximal_finger_length = 1.45 #a1
 proximal_connector_length = 0.3 #b1
 proximal_tendon_length = 1.45 #c1
 proximal_anchor_distance = 0.35 #d1 //inches
-starting_angle_offset = 15 #degree offset used for initial pose calculation (approximated)
-theta4 = 0 
+starting_angle_offset = 37.54 #degree offset used for initial pose calculation (approximated)
+
 
 mid_finger_length = 1.05 #a1
 mid_connector_length = 0.35 #b1
 mid_tendon_length = 1 #c1
 mid_anchor_distance = 0.25 #d1 //inches
-mid_joint_theta = 0
-mid_joint_offset= 0
+mid_joint_theta = 0.0
+mid_joint_offset= 0.0
 
-
-
-op_proximal_theta = 0
-op_mid_theta = 0
-op_distal_theta = 0
-distal_joint_theta = 0
-distal_joint_offset = 0
+op_proximal_theta = 0.0
+op_mid_theta = 0.0
+op_distal_theta = 0.0
+distal_joint_theta = 0.0
+distal_joint_offset = 0.0
 #mid_link_length = 0.3 #inches
 
 # def controller(model, data):
@@ -77,7 +75,7 @@ def calculatePos(current_joint_pos):
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
     k1= proximal_anchor_distance/proximal_finger_length
     k2= proximal_anchor_distance/proximal_tendon_length
-    k3= (proximal_finger_length**2 - proximal_connector_length**2 - proximal_tendon_length**2 + proximal_anchor_distance^2)/(2*proximal_finger_length*proximal_tendon_length)
+    k3= (proximal_finger_length**2 - proximal_connector_length**2 - proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
     A= math.cos(theta2)- k1 - k2*math.cos(theta2)+k3
     B= -2*math.sin(theta2)
     C= k1 + (1-k2)*math.cos(theta2) + k3
@@ -85,73 +83,97 @@ def calculatePos(current_joint_pos):
     theta4 = (-B + math.sqrt((B**2- (4*A*C))))/(2*A)
     op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
    
-    prox_cross_length= (proximal_anchor_distance(math.sin(theta2)))/math.sin(op_proximal_theta)
+    prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
     op_mid_theta = math.asin(((proximal_finger_length-prox_cross_length)*math.sin(op_proximal_theta))/proximal_connector_length)
 
     # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
     g1= mid_anchor_distance/mid_finger_length
     g2= mid_anchor_distance/mid_tendon_length
-    g3= (mid_finger_length**2 - mid_connector_length**2 - mid_tendon_length**2 + mid_anchor_distance^2)/(2*mid_finger_length*mid_tendon_length)
+    g3= (mid_finger_length**2 - mid_connector_length**2 - mid_tendon_length**2 + mid_anchor_distance**2)/(2*mid_finger_length*mid_tendon_length)
     Aa= math.cos(op_mid_theta)- g1 - g2*math.cos(op_mid_theta)+g3
     Bb= -2*math.sin(op_mid_theta)
     Cc= g1 + (1-g2)*math.cos(op_mid_theta) + g3
-    theta5 = (-Bb + math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa)
+    theta5 = (-Bb - math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa)
 
     mid_joint_theta= math.pi - theta5 #for mid joint
     op_distal_theta = math.pi - mid_joint_theta- op_mid_theta
     
-    mid_cross_length= (mid_anchor_distance(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
-    distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint 
+    mid_cross_length= (mid_anchor_distance*(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
+    #distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint 
     
     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
     return (joint_tri_value)
 
-
+###Individual Link Control  --- For testing
 def thumbController(prox, mid, dist):
     data.ctrl[prox_thumb_actuator_id] = prox
     data.ctrl[mid_thumb_actuator_id] = mid
     data.ctrl[distal_thumb_actuator_id] = dist
-
 def pointerController(prox, mid, dist):
     data.ctrl[prox_pointer_actuator_id] = prox
     data.ctrl[mid_pointer_actuator_id] = mid
     data.ctrl[distal_pointer_actuator_id] = dist
-
 def middleController(prox, mid, dist):
     data.ctrl[prox_middle_actuator_id] = prox
-    data.ctrl[mid_middle_actuator_id] = mid
+    data.ctrl[mid_middle_actuator_id] = mid 
     data.ctrl[distal_middle_actuator_id] = dist
-
 def ringController(prox, mid, dist):
     data.ctrl[prox_ring_actuator_id] = prox
     data.ctrl[mid_ring_actuator_id] = mid
     data.ctrl[distal_ring_actuator_id] = dist
-
 def pinkyController(prox, mid, dist):
     data.ctrl[prox_pinky_actuator_id] = prox
     data.ctrl[mid_pinky_actuator_id] = mid
     data.ctrl[distal_pinky_actuator_id] = dist
 
+###Group Finger Control --- Use with the calculatePos function
+#eg: pointerController(calculatePos(data.sensor('sensor_proxthumb').data[0]));
+
+def pointerGroup(joint_list):
+    data.ctrl[prox_pointer_actuator_id] = joint_list[0]
+    data.ctrl[mid_pointer_actuator_id] = joint_list[1]
+    data.ctrl[distal_pointer_actuator_id] = joint_list[2]
+def middleGroup(joint_list):
+    data.ctrl[prox_middle_actuator_id] = joint_list[0]
+    data.ctrl[mid_middle_actuator_id] = joint_list[1]
+    data.ctrl[distal_middle_actuator_id] = joint_list[2]
+def ringGroup(joint_list):
+    data.ctrl[prox_ring_actuator_id] = joint_list[0]
+    data.ctrl[mid_ring_actuator_id] = joint_list[1]
+    data.ctrl[distal_ring_actuator_id] = joint_list[2]
+def pinkyGroup(joint_list):
+    data.ctrl[prox_pinky_actuator_id] = joint_list[0]
+    data.ctrl[mid_pinky_actuator_id] = joint_list[1]
+    data.ctrl[distal_pinky_actuator_id] = joint_list[2]
 
 
 def setOffsets():
     print("setup")
-
+    # thumbController(0,0,0)
+    # pointerController(0,0,0)
+    # middleController(0,0,0)
+    # ringController(0,0,0)
+    # pinkyController(0,0,0)
+    # time.sleep(1)
+    # offset_list = calculatePos(0)
+    # mid_joint_offset= offset_list[1]
+    # distal_joint_offset= offset_list[2]
+    # print(offset_list)
+    
 def main():
     print("Running Main Sequence")
+    setOffsets()
      #Launch the interactive viewer
     with mujoco.viewer.launch_passive(model, data) as viewer:
         # Keep the viewer running until the user closes it
         while viewer.is_running():
             
           
-            pointerController(0,0,0)
-            thumbController(0,0,0)
-            middleController(0,0,0)
-            ringController(0,0,0)
-            pinkyController(0,0,0)
+            pointerGroup(calculatePos(1))
             
-            print(data.sensor('sensor_proxthumb').data[0])
+            print(calculatePos(1))
+            
+           # print(data.sensor('sensor_proxthumb').data[0])
 
             # Step the simulation
             mujoco.mj_step(model, data)
