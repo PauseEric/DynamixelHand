@@ -1,5 +1,6 @@
 import mujoco
 import mujoco.viewer
+import math
 
 # Define the path to your URDF file
 urdf_path = "testurdf/urdf/testurdf.urdf"
@@ -26,8 +27,37 @@ distal_middle_actuator_id = model.actuator('pos_distalmiddle').id
 distal_ring_actuator_id = model.actuator('pos_distalring').id
 distal_pinky_actuator_id = model.actuator('pos_distalpinky').id
 
+#List to keep track of actuator positions
+pointer_tri_pos = [0,0,0] #Format is [proximal_pos, middle_pos, distal_pos]
+middle_tri_pos = [0,0,0]
+ring_tri_pos = [0,0,0]
+pinky_tri_pos = [0,0,0]
+
+#Calculating the Joint positions for non real motors
+#Stage 1 of Finger links distance lengths (all in inches)
+
+proximal_finger_length = 1.45 #a1
+proximal_connector_length = 0.3 #b1
+proximal_tendon_length = 1.45 #c1
+proximal_anchor_distance = 0.35 #d1 //inches
+starting_angle_offset = 15 #degree offset used for initial pose calculation (approximated)
+theta4 = 0 
+
+mid_finger_length = 1.05 #a1
+mid_connector_length = 0.35 #b1
+mid_tendon_length = 1 #c1
+mid_anchor_distance = 0.25 #d1 //inches
+mid_joint_theta = 0
+mid_joint_offset= 0
 
 
+
+op_proximal_theta = 0
+op_mid_theta = 0
+op_distal_theta = 0
+distal_joint_theta = 0
+distal_joint_offset = 0
+#mid_link_length = 0.3 #inches
 
 # def controller(model, data):
 #     # Access current joint positions or other data
@@ -38,6 +68,43 @@ distal_pinky_actuator_id = model.actuator('pos_distalpinky').id
 #     target_angle = 1.57 # radians
 #     error = target_angle - current_qpos[0]
 #     data.ctrl[0] = error * Kp # Kp is a proportional gain
+
+
+def calculatePos(current_joint_pos):
+    # Convert current joint position from radians to degrees
+    theta2 = 180 - (math.degrees(current_joint_pos) + starting_angle_offset)
+
+    # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
+    k1= proximal_anchor_distance/proximal_finger_length
+    k2= proximal_anchor_distance/proximal_tendon_length
+    k3= (proximal_finger_length**2 - proximal_connector_length**2 - proximal_tendon_length**2 + proximal_anchor_distance^2)/(2*proximal_finger_length*proximal_tendon_length)
+    A= math.cos(math.radians(theta2))- k1 - k2*math.cos(math.radians(theta2))+k3
+    B= -2*math.sin(math.radians(theta2))
+    C= k1 + (1-k2)*math.cos(math.radians(theta2)) + k3
+
+    theta4 = math.degrees((-B + math.sqrt((B**2- (4*A*C))))/(2*A))
+    op_proximal_theta = 180 - math.degrees(theta4) - (180-math.degrees(theta2))
+   
+    prox_cross_length= (proximal_anchor_distance(math.sin(math.radians(theta2))))/math.sin(math.radians(op_proximal_theta))
+    op_mid_theta = math.degrees(math.asin(((proximal_finger_length-prox_cross_length)*math.sin(math.radians(op_proximal_theta)))/proximal_connector_length))
+
+    # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
+    g1= mid_anchor_distance/mid_finger_length
+    g2= mid_anchor_distance/mid_tendon_length
+    g3= (mid_finger_length**2 - mid_connector_length**2 - mid_tendon_length**2 + mid_anchor_distance^2)/(2*mid_finger_length*mid_tendon_length)
+    Aa= math.cos(math.radians(op_mid_theta))- g1 - g2*math.cos(math.radians(op_mid_theta))+g3
+    Bb= -2*math.sin(math.radians(op_mid_theta))
+    Cc= g1 + (1-g2)*math.cos(math.radians(op_mid_theta)) + g3
+    theta5 = math.degrees((-Bb + math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa))
+
+    mid_joint_theta= math.degrees(180 - theta5) #for mid joint
+    op_distal_theta = math.degrees(180-mid_joint_theta- op_mid_theta)
+    
+    mid_cross_length= (mid_anchor_distance(math.sin(math.radians(op_mid_theta))))/math.sin(math.radians(op_distal_theta))
+    distal_joint_theta= math.degrees(math.asin(((mid_finger_length-mid_cross_length)*math.sin(math.radians(op_distal_theta)))/mid_connector_length)) #for distal joint 
+    
+    joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
+    return (joint_tri_value)
 
 
 def thumbController(prox, mid, dist):
@@ -67,17 +134,24 @@ def pinkyController(prox, mid, dist):
 
 
 
+def setOffsets():
+    print("setup")
+
 def main():
     print("Running Main Sequence")
      #Launch the interactive viewer
     with mujoco.viewer.launch_passive(model, data) as viewer:
         # Keep the viewer running until the user closes it
         while viewer.is_running():
-
-            data.ctrl[prox_thumb_actuator_id]=1
-            data.ctrl[mid_thumb_actuator_id]=1
-            data.ctrl[distal_thumb_actuator_id]=1
             
+          
+            pointerController(0,0,0)
+            thumbController(0,0,0)
+            middleController(0,0,0)
+            ringController(0,0,0)
+            pinkyController(0,0,0)
+            
+            print(data.sensor('sensor_proxthumb').data[0])
 
             # Step the simulation
             mujoco.mj_step(model, data)

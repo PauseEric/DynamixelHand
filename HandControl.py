@@ -567,7 +567,7 @@ pointerClosePos = 2840
 middleOpenPos = 2475
 middleClosePos = 3410
 ringOpenPos = 3700
-ringClosePos = 2000
+ringClosePos = 2700
 pinkyOpenPos = 3700
 pinkyClosePos = 2650
 jointOpenPos = 70
@@ -591,7 +591,28 @@ def handOpen():
     joint.writePosition(jointOpenPos)
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
+def legoOpen():
+    enableHandMotors()
+    ring.writePosition(ringOpenPos)
+    thumb.writePosition(thumbOpenPos)
+    middle.writePosition(middleOpenPos)
+    pinky.writePosition(pinkyOpenPos)
+    pointer.writePosition(pointerOpenPos)
+    joint.writePosition(1000)
+    dynamixel.sentAllCmd()
+    dynamixel.updateMotorData()
+def handShake():
+    enableHandMotors()
+    ring.writePosition(ringClosePos)
+    thumb.writePosition(thumbClosePos)
+    middle.writePosition(middleClosePos)
+    pinky.writePosition(pinkyClosePos)
+    pointer.writePosition(pointerClosePos)
+    joint.writePosition(531)
+    dynamixel.sentAllCmd()
+    dynamixel.updateMotorData()
     
+
 def handClose():
     enableHandMotors()
     ring.writePosition(ringClosePos)
@@ -623,7 +644,7 @@ def main():
     print("Welcome, Main Start")
     x = 1
     while(x==1):
-        cmd = input("Enter 'o' to Open Hand, 'c' to Close Hand, 's' for Finger Test, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
+        cmd = input("Enter 'o' to Open Hand, 'l' to lego open, 'c' to Close Hand, 'h' handshake, 's' for Finger Test, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
         if cmd == 'o':
             handOpen()
             checkAllPos()
@@ -632,6 +653,10 @@ def main():
             checkAllPos()
         elif cmd == 'p':
             checkAllPos()
+        elif cmd =='h':
+            handShake()
+        elif cmd =='l':
+            legoOpen()
         elif cmd == 's':
             while True:
                 finger_cmd = input("Enter finger name (ring, thumb, middle, pinky, pointer, joint) or 'b' to go back: ")
