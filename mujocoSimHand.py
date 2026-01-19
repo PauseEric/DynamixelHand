@@ -72,36 +72,36 @@ distal_joint_offset = 0
 
 def calculatePos(current_joint_pos):
     # Convert current joint position from radians to degrees
-    theta2 = 180 - (math.degrees(current_joint_pos) + starting_angle_offset)
+    theta2 = math.pi - (current_joint_pos) + math.radians(starting_angle_offset)
 
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
     k1= proximal_anchor_distance/proximal_finger_length
     k2= proximal_anchor_distance/proximal_tendon_length
     k3= (proximal_finger_length**2 - proximal_connector_length**2 - proximal_tendon_length**2 + proximal_anchor_distance^2)/(2*proximal_finger_length*proximal_tendon_length)
-    A= math.cos(math.radians(theta2))- k1 - k2*math.cos(math.radians(theta2))+k3
-    B= -2*math.sin(math.radians(theta2))
-    C= k1 + (1-k2)*math.cos(math.radians(theta2)) + k3
+    A= math.cos(theta2)- k1 - k2*math.cos(theta2)+k3
+    B= -2*math.sin(theta2)
+    C= k1 + (1-k2)*math.cos(theta2) + k3
 
-    theta4 = math.degrees((-B + math.sqrt((B**2- (4*A*C))))/(2*A))
-    op_proximal_theta = 180 - math.degrees(theta4) - (180-math.degrees(theta2))
+    theta4 = (-B + math.sqrt((B**2- (4*A*C))))/(2*A)
+    op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
    
-    prox_cross_length= (proximal_anchor_distance(math.sin(math.radians(theta2))))/math.sin(math.radians(op_proximal_theta))
-    op_mid_theta = math.degrees(math.asin(((proximal_finger_length-prox_cross_length)*math.sin(math.radians(op_proximal_theta)))/proximal_connector_length))
+    prox_cross_length= (proximal_anchor_distance(math.sin(theta2)))/math.sin(op_proximal_theta)
+    op_mid_theta = math.asin(((proximal_finger_length-prox_cross_length)*math.sin(op_proximal_theta))/proximal_connector_length)
 
     # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
     g1= mid_anchor_distance/mid_finger_length
     g2= mid_anchor_distance/mid_tendon_length
     g3= (mid_finger_length**2 - mid_connector_length**2 - mid_tendon_length**2 + mid_anchor_distance^2)/(2*mid_finger_length*mid_tendon_length)
-    Aa= math.cos(math.radians(op_mid_theta))- g1 - g2*math.cos(math.radians(op_mid_theta))+g3
-    Bb= -2*math.sin(math.radians(op_mid_theta))
-    Cc= g1 + (1-g2)*math.cos(math.radians(op_mid_theta)) + g3
-    theta5 = math.degrees((-Bb + math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa))
+    Aa= math.cos(op_mid_theta)- g1 - g2*math.cos(op_mid_theta)+g3
+    Bb= -2*math.sin(op_mid_theta)
+    Cc= g1 + (1-g2)*math.cos(op_mid_theta) + g3
+    theta5 = (-Bb + math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa)
 
-    mid_joint_theta= math.degrees(180 - theta5) #for mid joint
-    op_distal_theta = math.degrees(180-mid_joint_theta- op_mid_theta)
+    mid_joint_theta= math.pi - theta5 #for mid joint
+    op_distal_theta = math.pi - mid_joint_theta- op_mid_theta
     
-    mid_cross_length= (mid_anchor_distance(math.sin(math.radians(op_mid_theta))))/math.sin(math.radians(op_distal_theta))
-    distal_joint_theta= math.degrees(math.asin(((mid_finger_length-mid_cross_length)*math.sin(math.radians(op_distal_theta)))/mid_connector_length)) #for distal joint 
+    mid_cross_length= (mid_anchor_distance(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
+    distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint 
     
     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
     return (joint_tri_value)
