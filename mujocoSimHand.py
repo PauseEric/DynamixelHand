@@ -48,13 +48,13 @@ mid_connector_length = 0.35 #b1
 mid_tendon_length = 1 #c1
 mid_anchor_distance = 0.25 #d1 //inches
 mid_joint_theta = 0.0
-mid_joint_offset= 0.0
+global mid_joint_offset, distal_joint_offset
 
 op_proximal_theta = 0.0
 op_mid_theta = 0.0
 op_distal_theta = 0.0
 distal_joint_theta = 0.0
-distal_joint_offset = 0.0
+
 #mid_link_length = 0.3 #inches
 
 # def controller(model, data):
@@ -70,20 +70,19 @@ distal_joint_offset = 0.0
 
 def calculatePos(current_joint_pos):
     # Convert current joint position from radians to degrees
-    theta2 = math.pi - (current_joint_pos) + math.radians(starting_angle_offset)
-
+    theta2 = (math.pi - (current_joint_pos) - math.radians(starting_angle_offset))
+    # print(theta2)
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
     k1= proximal_anchor_distance/proximal_finger_length
     k2= proximal_anchor_distance/proximal_tendon_length
     k3= (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
-    A= math.cos(theta2)- k1 - k2*math.cos(theta2)+k3
-    B= -2*math.sin(theta2)
-    C= k1 + (1-k2)*math.cos(theta2) + k3
-    print(A)
-    print(B)
-    print(C)
-    print((B**2- (4*A*C)))
-    theta4 = (-B + math.sqrt((B**2- (4*A*C))))/(2*A)
+    A= math.sin(theta2)
+    B= k2+ math.cos(theta2)
+    C= k1 * math.cos(theta2) + k3 
+    # print(A)
+    # print(B)
+    # print(C)
+    theta4= 2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B)) # A+- math.sqrt() possible as it is a quadratic
     op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
    
     prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
@@ -93,17 +92,20 @@ def calculatePos(current_joint_pos):
     g1= mid_anchor_distance/mid_finger_length
     g2= mid_anchor_distance/mid_tendon_length
     g3= (mid_finger_length**2 - mid_connector_length**2 + mid_tendon_length**2 + mid_anchor_distance**2)/(2*mid_finger_length*mid_tendon_length)
-    Aa= math.cos(op_mid_theta)- g1 - g2*math.cos(op_mid_theta)+g3
-    Bb= -2*math.sin(op_mid_theta)
-    Cc= g1 + (1-g2)*math.cos(op_mid_theta) + g3
-    theta5 = (-Bb - math.sqrt((Bb**2- (4*Aa*Cc))))/(2*Aa)
+    Aa= math.sin(op_mid_theta)
+    Bb= g2+ math.cos(op_mid_theta)
+    Cc= g1 * math.cos(op_mid_theta) + g3
+    theta5= 2* math.atan(( Aa - math.sqrt(Aa**2 +Bb**2 - Cc**2))/ (Cc+Bb)) # Aa+- math.sqrt() possible as it is a quadratic
 
     mid_joint_theta= math.pi - theta5 #for mid joint
     op_distal_theta = math.pi - mid_joint_theta- op_mid_theta
     
     mid_cross_length= (mid_anchor_distance*(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
-    #distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint 
+    distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint 
     
+    mid_joint_theta= mid_joint_theta - mid_joint_offset
+    distal_joint_theta= distal_joint_theta -distal_joint_offset
+
     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
     return (joint_tri_value)
 
@@ -152,16 +154,22 @@ def pinkyGroup(joint_list):
 
 def setOffsets():
     print("setup")
-    # thumbController(0,0,0)
-    # pointerController(0,0,0)
-    # middleController(0,0,0)
-    # ringController(0,0,0)
-    # pinkyController(0,0,0)
-    # time.sleep(1)
-    # offset_list = calculatePos(0)
-    # mid_joint_offset= offset_list[1]
-    # distal_joint_offset= offset_list[2]
+    thumbController(0,0,0)
+    pointerController(0,0,0)
+    middleController(0,0,0)
+    ringController(0,0,0)
+    pinkyController(0,0,0)
+    time.sleep(1)
+    offset_list = calculatePos(0)
+    mid_joint_offset= offset_list[1]
+    distal_joint_offset= offset_list[2]
     # print(offset_list)
+    # print(mid_joint_offset)
+    # print(distal_joint_offset) 
+    print(calculatePos(0))
+    print(calculatePos(1))
+    print(calculatePos(1.5))
+ 
     
 def main():
     print("Running Main Sequence")
@@ -171,10 +179,8 @@ def main():
         # Keep the viewer running until the user closes it
         while viewer.is_running():
             
-          
-            pointerGroup(calculatePos(3))
-            
-            print(calculatePos(3))
+            pointerGroup(calculatePos(1))
+            middleGroup(calculatePos(1.25))
             
            # print(data.sensor('sensor_proxthumb').data[0])
 
