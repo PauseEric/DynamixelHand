@@ -75,11 +75,14 @@ def calculatePos(current_joint_pos):
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
     k1= proximal_anchor_distance/proximal_finger_length
     k2= proximal_anchor_distance/proximal_tendon_length
-    k3= (proximal_finger_length**2 - proximal_connector_length**2 - proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
+    k3= (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
     A= math.cos(theta2)- k1 - k2*math.cos(theta2)+k3
     B= -2*math.sin(theta2)
     C= k1 + (1-k2)*math.cos(theta2) + k3
-
+    print(A)
+    print(B)
+    print(C)
+    print((B**2- (4*A*C)))
     theta4 = (-B + math.sqrt((B**2- (4*A*C))))/(2*A)
     op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
    
@@ -89,7 +92,7 @@ def calculatePos(current_joint_pos):
     # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
     g1= mid_anchor_distance/mid_finger_length
     g2= mid_anchor_distance/mid_tendon_length
-    g3= (mid_finger_length**2 - mid_connector_length**2 - mid_tendon_length**2 + mid_anchor_distance**2)/(2*mid_finger_length*mid_tendon_length)
+    g3= (mid_finger_length**2 - mid_connector_length**2 + mid_tendon_length**2 + mid_anchor_distance**2)/(2*mid_finger_length*mid_tendon_length)
     Aa= math.cos(op_mid_theta)- g1 - g2*math.cos(op_mid_theta)+g3
     Bb= -2*math.sin(op_mid_theta)
     Cc= g1 + (1-g2)*math.cos(op_mid_theta) + g3
@@ -169,9 +172,9 @@ def main():
         while viewer.is_running():
             
           
-            pointerGroup(calculatePos(1))
+            pointerGroup(calculatePos(3))
             
-            print(calculatePos(1))
+            print(calculatePos(3))
             
            # print(data.sensor('sensor_proxthumb').data[0])
 

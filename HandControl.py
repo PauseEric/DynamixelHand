@@ -620,10 +620,20 @@ def handClose():
     middle.writePosition(middleClosePos)
     pinky.writePosition(pinkyClosePos)
     pointer.writePosition(pointerClosePos)
-    joint.writePosition(jointClosePos)   
     dynamixel.sentAllCmd()
     dynamixel.updateMotorData()
     
+def handPinch():
+    enableHandMotors()
+    ring.writePosition(ringOpenPos)
+    thumb.writePosition(390)
+    middle.writePosition(middleOpenPos)
+    pinky.writePosition(pinkyOpenPos)
+    pointer.writePosition(2700)
+    joint.writePosition(1000)
+    dynamixel.sentAllCmd()
+    dynamixel.updateMotorData()
+
 def MotorPosControl(motorName, movement):
     motorName.enableMotor()
     motorName.switchMode('position')
@@ -637,20 +647,21 @@ def checkAllPos():
         print(motor.name)
         print(motor.PRESENT_POSITION_value)
         
-        
 
 def main(): 
     print("This is DXL_Coms module test file.")
     print("Welcome, Main Start")
     x = 1
     while(x==1):
-        cmd = input("Enter 'o' to Open Hand, 'l' to lego open, 'c' to Close Hand, 'h' handshake, 's' for Finger Test, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
+        cmd = input("Enter 'o' to Open Hand, 'i' to pinch, 'l' to lego open, 'c' to Close Hand, 'h' handshake, 's' for Finger Test, 'p' to Check Position, 'd' to disable motor, 'q' to Quit: ")
         if cmd == 'o':
             handOpen()
             checkAllPos()
         elif cmd == 'c':
             handClose()
             checkAllPos()
+        elif cmd == "i":
+            handPinch()
         elif cmd == 'p':
             checkAllPos()
         elif cmd =='h':
