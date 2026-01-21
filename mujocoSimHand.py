@@ -40,8 +40,8 @@ proximal_finger_length = 1.45 #a1
 proximal_connector_length = 0.3 #b1
 proximal_tendon_length = 1.45 #c1
 proximal_anchor_distance = 0.35 #d1 //inches
-starting_angle_offset = 37.54 #degree offset used for initial pose calculation (approximated)
-
+starting_angle_offset = math.radians(37.64) #degree offset used for initial pose calculation (approximated) 37.64
+geometric_offset = math.radians(55.15)#degree offset of the first anchor plane to the link (exact)
 
 mid_finger_length = 1.05 #a1
 mid_connector_length = 0.35 #b1
@@ -86,7 +86,7 @@ distal_joint_offset=0
 #     # print(C)
 #     theta4= 2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B)) # A+- math.sqrt() possible as it is a quadratic
 #     op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
-   
+    
 #     prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
 #     #op_mid_theta = math.asin(((proximal_finger_length-prox_cross_length)*math.sin(op_proximal_theta))/proximal_connector_length)
 #     asin_arg_mid = ((proximal_finger_length - prox_cross_length) * math.sin(op_proximal_theta)) / proximal_connector_length
@@ -115,7 +115,8 @@ distal_joint_offset=0
 def calculatePos(current_joint_pos):
 
     # Convert current joint position from radians to degrees
-    theta2 = (math.pi - (current_joint_pos) - math.radians(starting_angle_offset))
+    theta2 = (math.pi - (current_joint_pos) - starting_angle_offset)
+    print(math.degrees(theta2))
     # print(theta2)
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
     k1= proximal_anchor_distance/proximal_finger_length
@@ -127,11 +128,16 @@ def calculatePos(current_joint_pos):
     # print(A)
     # print(B)
     # print(C)
+    
     theta4= 2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B)) # A+- math.sqrt() possible as it is a quadratic
-    op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
+    print(math.degrees(theta4))
+    theta4 = (math.pi - theta4)
+    print(math.degrees(theta4))
+    op_proximal_theta = math.pi - theta4 -theta2
+    print(math.degrees(op_proximal_theta))
     prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
     op_mid_theta = math.asin(((proximal_finger_length-prox_cross_length)*math.sin(op_proximal_theta))/proximal_connector_length)
-    
+    print(math.degrees(op_mid_theta))
     # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
     g1= mid_anchor_distance/mid_finger_length
     g2= mid_anchor_distance/mid_tendon_length
@@ -141,7 +147,7 @@ def calculatePos(current_joint_pos):
     Cc= g1 * math.cos(op_mid_theta) + g3
     theta5= 2* math.atan(( Aa - math.sqrt(Aa**2 +Bb**2 - Cc**2))/ (Cc+Bb)) # Aa+- math.sqrt() possible as it is a quadratic
 
-    mid_joint_theta= math.pi - theta5 #for mid joint
+    mid_joint_theta= (math.pi - theta5)/2 #for mid joint
     op_distal_theta = math.pi - mid_joint_theta- op_mid_theta
     mid_cross_length= (mid_anchor_distance*(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
     distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint
@@ -211,9 +217,10 @@ def setOffsets():
     # print(offset_list)
     # print(mid_joint_offset)
     # print(distal_joint_offset) 
-    print(calculatePos(0))
+    print ("calc break 1")
     print(calculatePos(1))
-    print(calculatePos(1.5))
+    
+    
  
     
 def main():
@@ -224,9 +231,10 @@ def main():
         # Keep the viewer running until the user closes it
         while viewer.is_running():
             
-            pointerGroup(calculatePos(1))
-            middleGroup(calculatePos(1.25))
-            
+            # pointerGroup(calculatePos(1))
+            # middleGroup(calculatePos(0.95))
+            # ringGroup(calculatePos(0.92))
+            # pinkyGroup(calculatePos(1.5))
            # print(data.sensor('sensor_proxthumb').data[0])
 
             # Step the simulation
