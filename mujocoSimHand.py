@@ -112,81 +112,46 @@ distal_joint_offset=0
 
 #     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
 #     return (joint_tri_value)
+def calculatePos(current_joint_pos):
 
-def calculatePos(current_joint_pos, mode_prox="+", mode_mid="-"):
-    # Persistent storage to keep motion smooth
-    if not hasattr(calculatePos, "prev_mid"):
-        calculatePos.prev_mid = 0.0
-        calculatePos.prev_distal = 0.0
+    # Convert current joint position from radians to degrees
+    theta2 = (math.pi - (current_joint_pos) - math.radians(starting_angle_offset))
+    # print(theta2)
+    # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
+    k1= proximal_anchor_distance/proximal_finger_length
+    k2= proximal_anchor_distance/proximal_tendon_length
+    k3= (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
+    A= math.sin(theta2)
+    B= k2+ math.cos(theta2)
+    C= k1 * math.cos(theta2) + k3
+    # print(A)
+    # print(B)
+    # print(C)
+    theta4= 2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B)) # A+- math.sqrt() possible as it is a quadratic
+    op_proximal_theta = math.pi - theta4 - (math.pi-theta2)
+    prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
+    op_mid_theta = math.asin(((proximal_finger_length-prox_cross_length)*math.sin(op_proximal_theta))/proximal_connector_length)
+    
+    # Freudenstein's equation components (in radians, convert to degrees at the end) Middle Calc
+    g1= mid_anchor_distance/mid_finger_length
+    g2= mid_anchor_distance/mid_tendon_length
+    g3= (mid_finger_length**2 - mid_connector_length**2 + mid_tendon_length**2 + mid_anchor_distance**2)/(2*mid_finger_length*mid_tendon_length)
+    Aa= math.sin(op_mid_theta)
+    Bb= g2+ math.cos(op_mid_theta)
+    Cc= g1 * math.cos(op_mid_theta) + g3
+    theta5= 2* math.atan(( Aa - math.sqrt(Aa**2 +Bb**2 - Cc**2))/ (Cc+Bb)) # Aa+- math.sqrt() possible as it is a quadratic
 
-    # 1. INPUT ANGLE
-    theta2 = (math.pi + current_joint_pos - math.radians(starting_angle_offset))
-    
-    # 2. PROXIMAL CALCULATION
-    k1 = proximal_anchor_distance / proximal_finger_length
-    k2 = proximal_anchor_distance / proximal_tendon_length
-    k3 = (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2) / (2 * proximal_finger_length * proximal_tendon_length)
-    
-    A, B, C = math.sin(theta2), k2 + math.cos(theta2), k1 * math.cos(theta2) + k3
-    disc1 = A**2 + B**2 - C**2
-    
-    if disc1 < 0: return [current_joint_pos, calculatePos.prev_mid, calculatePos.prev_distal]
+    mid_joint_theta= math.pi - theta5 #for mid joint
+    op_distal_theta = math.pi - mid_joint_theta- op_mid_theta
+    mid_cross_length= (mid_anchor_distance*(math.sin(op_mid_theta)))/math.sin(op_distal_theta)
+    distal_joint_theta= math.asin(((mid_finger_length-mid_cross_length)*math.sin(op_distal_theta))/mid_connector_length) #for distal joint
 
-    # Select Branch for Proximal (+ is usually Open, - is usually Crossed)
-    sqrt_disc1 = math.sqrt(disc1)
-    t_prox = (A + sqrt_disc1) / (C + B) if mode_prox == "+" else (A - sqrt_disc1) / (C + B)
-    theta4 = 2 * math.atan(t_prox)
-    
-    # Geometry Transfer
-    op_proximal_theta = abs(theta2 - theta4)
-    sin_op_prox = math.sin(op_proximal_theta)
-    if abs(sin_op_prox) < 1e-6: sin_op_prox = 1e-6
-    
-    prox_cross_length = (proximal_anchor_distance * math.sin(theta2)) / sin_op_prox
-    mid_input_ratio = ((proximal_finger_length - prox_cross_length) * sin_op_prox) / proximal_connector_length
-    op_mid_theta = math.asin(max(min(mid_input_ratio, 1.0), -1.0))
+    mid_joint_theta= mid_joint_theta - mid_joint_offset
+    distal_joint_theta= distal_joint_theta -distal_joint_offset
 
-    # 3. MIDDLE CALCULATION (Where the 'reversal' usually happens)
-    g1 = mid_anchor_distance / mid_finger_length
-    g2 = mid_anchor_distance / mid_tendon_length
-    g3 = (mid_finger_length**2 - mid_connector_length**2 + mid_tendon_length**2 + mid_anchor_distance**2) / (2 * mid_finger_length * mid_tendon_length)
-    
-    Aa, Bb, Cc = math.sin(op_mid_theta), g2 + math.cos(op_mid_theta), g1 * math.cos(op_mid_theta) + g3
-    disc2 = Aa**2 + Bb**2 - Cc**2
-    
-    if disc2 >= 0:
-        sqrt_disc2 = math.sqrt(disc2)
-        # We try the CROSSED configuration (-) by default here
-        # but you can toggle mode_mid to "+" to see the difference
-        t_mid = (Aa + sqrt_disc2) / (Cc + Bb) if mode_mid == "+" else (Aa - sqrt_disc2) / (Cc + Bb)
-        
-        theta5 = 2 * math.atan(t_mid)
-        mid_joint_theta = (math.pi - theta5) - mid_joint_offset
-        
-        # Continuity check: If the jump is too large (> 45 deg), likely a branch flip
-        if abs(mid_joint_theta - calculatePos.prev_mid) > 0.8:
-            # Try the other branch automatically
-            t_mid_alt = (Aa - sqrt_disc2) / (Cc + Bb) if mode_mid == "+" else (Aa + sqrt_disc2) / (Cc + Bb)
-            theta5 = 2 * math.atan(t_mid_alt)
-            mid_joint_theta = (math.pi - theta5) - mid_joint_offset
+    joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
 
-        calculatePos.prev_mid = mid_joint_theta
-    else:
-        mid_joint_theta = calculatePos.prev_mid
-        theta5 = math.pi - (mid_joint_theta + mid_joint_offset)
-
-    # 4. DISTAL CALCULATION
-    op_distal_theta = math.pi - (math.pi - theta5) - op_mid_theta
-    sin_op_dist = math.sin(op_distal_theta)
-    if abs(sin_op_dist) < 1e-6: sin_op_dist = 1e-6
-
-    mid_cross_length = (mid_anchor_distance * math.sin(op_mid_theta)) / sin_op_dist
-    distal_input_ratio = ((mid_finger_length - mid_cross_length) * sin_op_dist) / mid_connector_length
-    distal_joint_theta = math.asin(max(min(distal_input_ratio, 1.0), -1.0)) - distal_joint_offset
-    
-    calculatePos.prev_distal = distal_joint_theta
-
-    return [current_joint_pos, mid_joint_theta, distal_joint_theta]
+    return (joint_tri_value)
 
 ###Individual Link Control  --- For testing
 def thumbController(prox, mid, dist):
