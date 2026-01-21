@@ -40,10 +40,10 @@
         <position ctrlrange="0 3.14" kp ="500" kv = "10" gear = "-1"/>
       </default>
       <default class = "middle_joint_actuator">
-        <position ctrlrange="0 4" kp ="500" kv = "10" gear = "1"/>
+        <position ctrlrange="0 4" kp ="500" kv = "10" gear = "-1"/>
       </default>
       <default class = "distal_joint_actuator">
-        <position ctrlrange="0 10" kp ="500" kv = "10" gear = "-1"/>  
+        <position ctrlrange="0 10" kp ="500" kv = "10" gear = "1"/>  
       </default>
   </default>
 
@@ -150,6 +150,9 @@
     <actuatorpos name= "sensor_proxthumb" actuator= "pos_proxthumb"/>
     <actuatorpos name= "sensor_midthumb" actuator = "pos_midthumb"/>
     <actuatorpos name = "sensor_distalthumb" actuator= "pos_distalthumb"/>
+    <actuatorpos name = "sensor_proxpointer" actuator ="pos_proxpointer"/>
+    <actuatorpos name = "sensor_midpointer" actuator = "pos_midpointer"/>
+    <actuatorpos name = "sensor_distalpointer" actuator = "pos_distalpointer"/>
 
   </sensor>
 </mujoco>

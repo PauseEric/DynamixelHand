@@ -68,7 +68,7 @@ distal_joint_offset=0
 #     target_angle = 1.57 # radians
 #     error = target_angle - current_qpos[0]
 #     data.ctrl[0] = error * Kp # Kp is a proportional gain
-
+'''
 
 # def calculatePos(current_joint_pos):
 #     # Convert current joint position from radians to degrees
@@ -112,27 +112,33 @@ distal_joint_offset=0
 
 #     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
 #     return (joint_tri_value)
-def calculatePos(current_joint_pos):
+def calculatePosFreudenstein(current_joint_pos):
 
     # Convert current joint position from radians to degrees
-    theta2 = (math.pi - (current_joint_pos) - starting_angle_offset)
+    theta2 = current_joint_pos#(math.pi - (current_joint_pos) - starting_angle_offset)
     print(math.degrees(theta2))
     # print(theta2)
+    #Quadratic Equation model based on values in CAD
+    theta4 = math.radians(12.80204*theta2**2+28.71228*theta2 + 27.93894)
+    print(math.degrees(theta4))
     # Freudenstein's equation components (in radians, convert to degrees at the end) Proximal Calc
-    k1= proximal_anchor_distance/proximal_finger_length
-    k2= proximal_anchor_distance/proximal_tendon_length
-    k3= (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
-    A= math.sin(theta2)
-    B= k2+ math.cos(theta2)
-    C= k1 * math.cos(theta2) + k3
-    # print(A)
-    # print(B)
-    # print(C)
     
-    theta4= 2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B)) # A+- math.sqrt() possible as it is a quadratic
-    print(math.degrees(theta4))
-    theta4 = (math.pi - theta4)
-    print(math.degrees(theta4))
+   
+   
+    # k1= proximal_anchor_distance/proximal_finger_length
+    # k2= proximal_anchor_distance/proximal_tendon_length
+    # k3= (proximal_finger_length**2 - proximal_connector_length**2 + proximal_tendon_length**2 + proximal_anchor_distance**2)/(2*proximal_finger_length*proximal_tendon_length)
+    # A= math.sin(theta2)
+    # B= k2+ math.cos(theta2)
+    # C= k1 * math.cos(theta2) + k3
+    # # print(A)
+    # # print(B)
+    # # print(C)
+    
+    # theta4= (2* math.atan(( A + math.sqrt(A**2 +B**2 - C**2))/ (C+B))) #- math.radians(13.4212) # A+- math.sqrt() possible as it is a quadratic
+    # print(math.degrees(theta4))
+    # theta4 = (math.pi - theta4)
+    # print(math.degrees(theta4))
     op_proximal_theta = math.pi - theta4 -theta2
     print(math.degrees(op_proximal_theta))
     prox_cross_length= (proximal_anchor_distance*(math.sin(theta2)))/math.sin(op_proximal_theta)
@@ -158,6 +164,17 @@ def calculatePos(current_joint_pos):
     joint_tri_value = [current_joint_pos, mid_joint_theta, distal_joint_theta]
 
     return (joint_tri_value)
+'''
+
+def calcPos(targetPos):
+    tri_pos_value= [0,0,0]
+    tri_pos_value[0] = targetPos
+    tri_pos_value[1] = (-17.01547*targetPos**3 + 49.41985*targetPos**2+ -116.71972*targetPos+ 169.413)*(math.pi/180) - mid_joint_offset
+    tri_pos_value[2] = (-7.0316*targetPos**3 + 17.53947*targetPos**2+ -52.1308*targetPos + 175.158)*(math.pi/180) - distal_joint_offset
+    return(tri_pos_value)
+
+
+
 
 ###Individual Link Control  --- For testing
 def thumbController(prox, mid, dist):
@@ -211,14 +228,15 @@ def setOffsets():
     ringController(0,0,0)
     pinkyController(0,0,0)
     time.sleep(1)
-    offset_list = calculatePos(0)
+    offset_list = calcPos(0)
     mid_joint_offset= offset_list[1]
     distal_joint_offset= offset_list[2]
+    print("setup initialized")
+    print(calcPos(1))
     # print(offset_list)
     # print(mid_joint_offset)
     # print(distal_joint_offset) 
-    print ("calc break 1")
-    print(calculatePos(1))
+    
     
     
  
@@ -226,15 +244,20 @@ def setOffsets():
 def main():
     print("Running Main Sequence")
     setOffsets()
+    pointerTarget= 1
      #Launch the interactive viewer
     with mujoco.viewer.launch_passive(model, data) as viewer:
         # Keep the viewer running until the user closes it
         while viewer.is_running():
             
-            # pointerGroup(calculatePos(1))
-            # middleGroup(calculatePos(0.95))
-            # ringGroup(calculatePos(0.92))
-            # pinkyGroup(calculatePos(1.5))
+            # pointerGroup(calcPos(1))
+            # middleGroup(calcPos(0.5))
+            # ringGroup(calcPos(1))
+            # pinkyGroup(calcPos(1.5))
+          #  if (data.sensor('sensor_proxpointer').data[0] != pointerTarget):
+            # print(data.sensor('sensor_proxpointer').data[0])
+            # print(data.sensor('sensor_midpointer').data[0])
+            # print(data.sensor('sensor_distalpointer').data[0])
            # print(data.sensor('sensor_proxthumb').data[0])
 
             # Step the simulation
