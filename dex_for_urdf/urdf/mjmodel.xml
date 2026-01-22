@@ -22,28 +22,31 @@
   <default>
     <geom friction="1 0.005 0.0001" density="500"/>
       <default class = "thumbjt">
-        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 10"/>
+        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.0" range = "0 10"/>
       </default>
       <default class = "proxjt">
-        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 5.2"/>
+        <joint type= "hinge" limited="true" damping="0" stiffness="0" armature ="0.0" range = "0 5.2"/>
       </default>
       <default class = "midjt">
-        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 10"/>
+        <joint type= "hinge" limited="true" damping="0" stiffness="0" armature ="0.0" range = "0 10"/>
       </default>
       <default class = "distjt">
-        <joint type= "hinge" limited="true" damping="0.5" stiffness="0" armature ="0.03" range = "0 4"/>
+        <joint type= "hinge" limited="true" damping="0" stiffness="0" armature ="0.0" range = "0 4"/>
       </default>
-      <default class = "thumb_actuator">
-        <position ctrlrange="0 10" kp ="500" kv = "10" gear = "-1"/>
+      <default class="thumb_actuator">
+        <motor ctrlrange="-0.6 0.6" ctrllimited="true" gear="-1"/>
       </default>
-      <default class = "proximal_joint_actuator">
-        <position ctrlrange="0 3.14" kp ="500" kv = "10" gear = "-1"/>
+
+      <default class="proximal_joint_actuator">
+        <motor ctrlrange="-50 50" ctrllimited="true" gear="-1"/>
       </default>
-      <default class = "middle_joint_actuator">
-        <position ctrlrange="0 4" kp ="500" kv = "10" gear = "1"/>
+
+      <default class="middle_joint_actuator">
+        <motor ctrlrange="-0.6 0.6" ctrllimited="true" gear="-1"/>
       </default>
-      <default class = "distal_joint_actuator">
-        <position ctrlrange="0 10" kp ="500" kv = "10" gear = "-1"/>  
+
+      <default class="distal_joint_actuator">
+        <motor ctrlrange="-0.6 0.6" ctrllimited="true" gear="1"/>  
       </default>
   </default>
 
@@ -129,27 +132,51 @@
 
   </worldbody>
   <actuator>
-    <position name="pos_proxthumb" joint="proxthumbjt" class= "proximal_joint_actuator" />
-    <position name="pos_midthumb" joint="midthumbjt" class= "middle_joint_actuator" />
-    <position name="pos_distalthumb" joint="distalthumbjt" class= "distal_joint_actuator" />
-    <position name="pos_proxpointer" joint="proxpointerjt" class = "proximal_joint_actuator" />
-    <position name="pos_midpointer" joint="midpointerjt" class = "middle_joint_actuator"/>
-    <position name="pos_distalpointer" joint="distalpointerjt" class ="distal_joint_actuator"/>
-    <position name="pos_proxmiddle" joint="proxmiddlejt" class="proximal_joint_actuator"/>
-    <position name="pos_midmiddle" joint="midmiddlejt" class= "middle_joint_actuator"/> 
-    <position name="pos_distalmiddle" joint="distalmiddlejt" class = "distal_joint_actuator"/>
-    <position name="pos_proxring" joint="proxringjt" class= "proximal_joint_actuator"/>
-    <position name="pos_midring" joint="midringjt" class= "middle_joint_actuator"/>
-    <position name="pos_distalring" joint="distalringjt" class = "distal_joint_actuator"/>
-    <position name="pos_proxpinky" joint="proxpinkyjt" class= "proximal_joint_actuator"/>
-    <position name="pos_midpinky" joint="midpinkyjt" class= "middle_joint_actuator"/>
-    <position name="pos_distalpinky" joint="distalpinkyjt" class = "distal_joint_actuator"/> 
-  </actuator>
+    <motor name="motor_proxthumb"   joint="proxthumbjt"     class="proximal_joint_actuator" />
+    <motor name="motor_midthumb"    joint="midthumbjt"      class="middle_joint_actuator" />
+    <motor name="motor_distalthumb" joint="distalthumbjt"   class="distal_joint_actuator" />
+
+    <motor name="motor_proxpointer"   joint="proxpointerjt"   class="proximal_joint_actuator" />
+    <!-- <motor name="motor_midpointer"    joint="midpointerjt"    class="middle_joint_actuator"/>
+    <motor name="motor_distalpointer" joint="distalpointerjt" class="distal_joint_actuator"/> -->
+
+    <motor name="motor_proxmiddle"   joint="proxmiddlejt"    class="proximal_joint_actuator"/>
+    <!-- <motor name="motor_midmiddle"    joint="midmiddlejt"     class="middle_joint_actuator"/> 
+    <motor name="motor_distalmiddle" joint="distalmiddlejt"  class="distal_joint_actuator"/> -->
+
+    <motor name="motor_proxring"   joint="proxringjt"      class="proximal_joint_actuator"/>
+    <!-- <motor name="motor_midring"    joint="midringjt"       class="middle_joint_actuator"/>
+    <motor name="motor_distalring" joint="distalringjt"    class="distal_joint_actuator"/> -->
+
+    <motor name="motor_proxpinky"   joint="proxpinkyjt"     class="proximal_joint_actuator"/>
+    <!-- <motor name="motor_midpinky"    joint="midpinkyjt"      class="middle_joint_actuator"/>
+    <motor name="motor_distalpinky" joint="distalpinkyjt"   class="distal_joint_actuator"/>  -->
+</actuator>
 
   <sensor>
-    <actuatorpos name= "sensor_proxthumb" actuator= "pos_proxthumb"/>
-    <actuatorpos name= "sensor_midthumb" actuator = "pos_midthumb"/>
-    <actuatorpos name = "sensor_distalthumb" actuator= "pos_distalthumb"/>
+    <actuatorpos name= "sensor_proxthumb" actuator= "motor_proxthumb"/>
+    <actuatorpos name= "sensor_midthumb" actuator = "motor_midthumb"/>
+    <actuatorpos name = "sensor_distalthumb" actuator= "motor_distalthumb"/>
+    <actuatorpos name = "sensor_proxpointer" actuator ="motor_proxpointer"/>
+    <actuatorpos name = "sensor_proxmiddle" actuator = "motor_proxmiddle"/>
+    <actuatorpos name = "sensor_proxring" actuator = "motor_proxring"/>
+    <actuatorpos name = "sensor_proxpinky" actuator = "motor_proxpinky" />
+
+    <!-- <actuatorpos name = "sensor_midpointer" actuator = "motor_midpointer"/>
+    <actuatorpos name = "sensor_distalpointer" actuator = "motor_distalpointer"/> -->
 
   </sensor>
+  <equality>
+    <joint joint1="proxpointerjt" joint2="midpointerjt" polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxpointerjt" joint2="distalpointerjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+
+    <joint joint1="proxmiddlejt" joint2="midmiddlejt" polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxmiddlejt" joint2="distalmiddlejt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+    
+    <joint joint1="proxringjt"    joint2="midringjt"    polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxringjt"    joint2="distalringjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+    
+    <joint joint1="proxpinkyjt"   joint2="midpinkyjt"   polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxpinkyjt"   joint2="distalpinkyjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+  </equality>
 </mujoco>
