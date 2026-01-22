@@ -9,23 +9,23 @@ xml_path = "dex_for_urdf/urdf/mjmodel.xml"
 model = mujoco.MjModel.from_xml_path(xml_path)
 data = mujoco.MjData(model)
 
-prox_thumb_actuator_id = model.actuator('pos_proxthumb').id
-prox_pointer_actuator_id = model.actuator('pos_proxpointer').id
-prox_middle_actuator_id = model.actuator('pos_proxmiddle').id
-prox_ring_actuator_id = model.actuator('pos_proxring').id   
-prox_pinky_actuator_id = model.actuator('pos_proxpinky').id
+prox_thumb_actuator_id = model.actuator('motor_proxthumb').id
+prox_pointer_actuator_id = model.actuator('motor_proxpointer').id
+prox_middle_actuator_id = model.actuator('motor_proxmiddle').id
+prox_ring_actuator_id = model.actuator('motor_proxring').id   
+prox_pinky_actuator_id = model.actuator('motor_proxpinky').id
 
-mid_thumb_actuator_id = model.actuator('pos_midthumb').id
-mid_pointer_actuator_id = model.actuator('pos_midpointer').id
-mid_middle_actuator_id = model.actuator('pos_midmiddle').id
-mid_ring_actuator_id = model.actuator('pos_midring').id
-mid_pinky_actuator_id = model.actuator('pos_midpinky').id
+mid_thumb_actuator_id = model.actuator('motor_midthumb').id
+# mid_pointer_actuator_id = model.actuator('pos_midpointer').id
+# mid_middle_actuator_id = model.actuator('pos_midmiddle').id
+# mid_ring_actuator_id = model.actuator('pos_midring').id
+# mid_pinky_actuator_id = model.actuator('pos_midpinky').id
 
-distal_thumb_actuator_id = model.actuator('pos_distalthumb').id
-distal_pointer_actuator_id = model.actuator('pos_distalpointer').id
-distal_middle_actuator_id = model.actuator('pos_distalmiddle').id
-distal_ring_actuator_id = model.actuator('pos_distalring').id
-distal_pinky_actuator_id = model.actuator('pos_distalpinky').id
+distal_thumb_actuator_id = model.actuator('motor_distalthumb').id
+# distal_pointer_actuator_id = model.actuator('pos_distalpointer').id
+# distal_middle_actuator_id = model.actuator('pos_distalmiddle').id
+# distal_ring_actuator_id = model.actuator('pos_distalring').id
+# distal_pinky_actuator_id = model.actuator('pos_distalpinky').id
 
 #List to keep track of actuator positions
 pointer_tri_pos = [0,0,0] #Format is [proximal_pos, middle_pos, distal_pos]
@@ -173,83 +173,26 @@ def calcPos(targetPos):
     tri_pos_value[2] = (-7.0316*targetPos**3 + 17.53947*targetPos**2+ -52.1308*targetPos + 175.158)*(math.pi/180) - distal_joint_offset
     return(tri_pos_value)
 
-
-
-
-###Individual Link Control  --- For testing
-def thumbController(prox, mid, dist):
-    data.ctrl[prox_thumb_actuator_id] = prox
-    data.ctrl[mid_thumb_actuator_id] = mid
-    data.ctrl[distal_thumb_actuator_id] = dist
-def pointerController(prox, mid, dist):
-    data.ctrl[prox_pointer_actuator_id] = prox
-    data.ctrl[mid_pointer_actuator_id] = mid
-    data.ctrl[distal_pointer_actuator_id] = dist
-def middleController(prox, mid, dist):
-    data.ctrl[prox_middle_actuator_id] = prox
-    data.ctrl[mid_middle_actuator_id] = mid 
-    data.ctrl[distal_middle_actuator_id] = dist
-def ringController(prox, mid, dist):
-    data.ctrl[prox_ring_actuator_id] = prox
-    data.ctrl[mid_ring_actuator_id] = mid
-    data.ctrl[distal_ring_actuator_id] = dist
-def pinkyController(prox, mid, dist):
-    data.ctrl[prox_pinky_actuator_id] = prox
-    data.ctrl[mid_pinky_actuator_id] = mid
-    data.ctrl[distal_pinky_actuator_id] = dist
-
-###Group Finger Control --- Use with the calculatePos function
-#eg: pointerController(calculatePos(data.sensor('sensor_proxthumb').data[0]));
-
-def pointerGroup(joint_list):
-    data.ctrl[prox_pointer_actuator_id] = joint_list[0]
-    data.ctrl[mid_pointer_actuator_id] = joint_list[1]
-    data.ctrl[distal_pointer_actuator_id] = joint_list[2]
-def middleGroup(joint_list):
-    data.ctrl[prox_middle_actuator_id] = joint_list[0]
-    data.ctrl[mid_middle_actuator_id] = joint_list[1]
-    data.ctrl[distal_middle_actuator_id] = joint_list[2]
-def ringGroup(joint_list):
-    data.ctrl[prox_ring_actuator_id] = joint_list[0]
-    data.ctrl[mid_ring_actuator_id] = joint_list[1]
-    data.ctrl[distal_ring_actuator_id] = joint_list[2]
-def pinkyGroup(joint_list):
-    data.ctrl[prox_pinky_actuator_id] = joint_list[0]
-    data.ctrl[mid_pinky_actuator_id] = joint_list[1]
-    data.ctrl[distal_pinky_actuator_id] = joint_list[2]
-
-
 def setOffsets():
     global mid_joint_offset, distal_joint_offset
     print("setup")
-    thumbController(0,0,0)
-    pointerController(0,0,0)
-    middleController(0,0,0)
-    ringController(0,0,0)
-    pinkyController(0,0,0)
-    time.sleep(1)
-    offset_list = calcPos(0)
-    mid_joint_offset= offset_list[1]
-    distal_joint_offset= offset_list[2]
-    print("setup initialized")
-    print(calcPos(1))
-    # print(offset_list)
-    # print(mid_joint_offset)
-    # print(distal_joint_offset) 
-    
-    
-    
+        
  
     
 def main():
     print("Running Main Sequence")
     setOffsets()
-    pointerTarget= 1
+    print("press p to check current motor positions")
      #Launch the interactive viewer
     with mujoco.viewer.launch_passive(model, data) as viewer:
         # Keep the viewer running until the user closes it
         while viewer.is_running():
-            
+            if (data.sensor('sensor_proxpointer').data[0] <= (math.pi/2)):
+                data.ctrl[prox_pointer_actuator_id] = 1
+            else:
+                data.ctrl[prox_pointer_actuator_id] = 0
+            print(data.sensor('sensor_proxpointer').data[0])
+
             # pointerGroup(calcPos(1))
             # middleGroup(calcPos(0.5))
             # ringGroup(calcPos(1))
