@@ -155,4 +155,17 @@
     <actuatorpos name = "sensor_distalpointer" actuator = "pos_distalpointer"/>
 
   </sensor>
+  <equality>
+    <joint joint1="proxpointerjt" joint2="midpointerjt" polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxpointerjt" joint2="distalpointerjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+
+    <joint joint1="proxmiddlejt" joint2="midmiddlejt" polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxmiddlejt" joint2="distalmiddlejt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+    
+    <joint joint1="proxringjt"    joint2="midringjt"    polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxringjt"    joint2="distalringjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+    
+    <joint joint1="proxpinkyjt"   joint2="midpinkyjt"   polycoef="2.95681 -2.03714 0.862539 -0.296976"/>
+    <joint joint1="proxpinkyjt"   joint2="distalpinkyjt" polycoef="3.05708 -0.909854 0.306121 -0.122724"/>
+  </equality>
 </mujoco>
